@@ -1,8 +1,4 @@
-
-const fs = require("fs");
-const express = require("express");
-const { throws } = require("assert");
-const app = express();
+import fs from 'fs';
 
 class ProductManager {
     idAssign = 1;
@@ -62,7 +58,6 @@ class ProductManager {
         } catch (error) {
             throw new Error(error.message);
         }
-
     }
 
     async getProductById(productId) {
@@ -73,8 +68,8 @@ class ProductManager {
             if(productFound != undefined) {
                 return productFound;
             }
-            throw new Error("Product not found");
             return undefined;            
+            //throw new Error("Product not found");
         } catch (error) {
             throw new Error(error.message);
         }
@@ -98,6 +93,7 @@ class ProductManager {
             throw new Error(error.message);
         }
     }
+    
     async deleteProduct(productId) {
         try {
             let products = await this.getProducts();
@@ -117,6 +113,7 @@ class ProductManager {
         }
     } 
 }
+export default ProductManager;
 
 const productsList = [
     {
@@ -200,33 +197,16 @@ const productsList = [
         stock: 100
     }
     ];
-const produc7tUpdate = {
-    price: 12345,
-    stock: 123,
-}
 
-
-const productsBase = new ProductManager("database.json");
-
-const asyncFn = async () => {
-    try {
-        console.log("Products:\n", await productsBase.getProducts());
-        console.log("Pushing products...");
-        for (let i = 0; i < productsList.length; i++) {
-            await productsBase.addProduct(productsList[i]);
-        } 
-        console.log("Products:\n", await productsBase.getProducts());
-        console.log("Pushing same product...");
-        await productsBase.addProduct(productsList[2]);
-        
-        console.log("Updating product 7");
-        await productsBase.updateProduct(7, produc7tUpdate);
-        
-        console.log("Deleting product 8");
-        await productsBase.deleteProduct(9);
-    } catch (error) {
-        throw new Error(error.message);
-    }
-}; asyncFn();
-
-
+//const productsBase = new ProductManager("products.json");
+// const asyncFn = async () => {
+//     try {
+//         console.log("Pushing products...");
+//         for (let i = 0; i < productsList.length; i++) {
+//             await productsBase.addProduct(productsList[i]);
+//         } 
+//         console.log("Products:\n", await productsBase.getProducts());
+//     } catch (error) {
+//         throw new Error(error.message);
+//     }
+// }; asyncFn(); 
