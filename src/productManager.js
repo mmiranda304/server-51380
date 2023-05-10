@@ -5,11 +5,17 @@ class ProductManager {
     constructor(path) {
         this.path = path;
     }
-
+    //////////////////// REVISAR PROBLEMA DE ID ASSIGN ///////////////////////////////////
     async getProducts() {
         try {
             if(fs.existsSync(this.path)) {
                 let data = await fs.promises.readFile(this.path, "utf-8");
+                let products = JSON.parse(data);
+                for (let i = 0; i < products.length; i++) {
+                    if (products[i].id === this.idAssign) {
+                        this.idAssign++;
+                    }
+                }
                 return JSON.parse(data);
             }
             await fs.promises.writeFile(this.path, JSON.stringify([])); //Si no existe el archivo, lo creo
@@ -30,7 +36,8 @@ class ProductManager {
             !product.price || product.price < 0 ||
             !product.thumbnail || 
             !product.code || 
-            !product.stock || product.stock < 0 
+            !product.stock || product.stock < 0 ||
+            product.status === undefined
             ) {
                 productOK = false;
                 console.log(`The product was not entered correctly. Please try again completing all de fields correctly.`);
@@ -43,16 +50,17 @@ class ProductManager {
                 let codeOK = products.find((p) => p.code === product.code);             
     
                 if(codeOK === undefined) {
-                    let newProduct = {id: this.idAssign, ...product};
+                    let newProduct = {id: this.idAssign, ...product};     
                     products.push(newProduct);
-                    this.idAssign += 1;
                     const productsString = JSON.stringify(products);
                     await fs.promises.writeFile(this.path,productsString);
     
                     console.log("Product uploaded successfully.");
+                    return true;
                 }
                 else {
                     console.log(`Product code "${product.code}" is already in use. Please try again with a new code.`);
+                    return false;
                 }
             }    
         } catch (error) {
@@ -68,8 +76,8 @@ class ProductManager {
             if(productFound != undefined) {
                 return productFound;
             }
+            console.log("Product not found");
             return undefined;            
-            //throw new Error("Product not found");
         } catch (error) {
             throw new Error(error.message);
         }
@@ -85,9 +93,11 @@ class ProductManager {
                 const productsString = JSON.stringify(products);
                 await fs.promises.writeFile(this.path,productsString);
                 console.log("Product updated succesfully");
+                return true;
             }
             else {
                 console.log("Product not found");
+                return false;
             } 
         } catch (error) {
             throw new Error(error.message);
@@ -104,9 +114,11 @@ class ProductManager {
                 const productsString = JSON.stringify(products);
                 await fs.promises.writeFile(this.path,productsString);
                 console.log("Product deleted succesfully");
+                return true;
             }
             else {
                 console.log("Product not found");
+                return false;
             }     
         } catch (error) {
             throw new Error(error.message);
