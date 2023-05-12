@@ -19,7 +19,7 @@ class CartManager {
                 }
                 return carts;
             }
-            await fs.promises.writeFile(this.path, JSON.stringify([])); // If data doesn't existe, then create
+            await fs.promises.writeFile(this.path, JSON.stringify([])); // If data doesn't exist, then create
             console.log('New carts.json data created');
             return [];
         } catch (error) {
@@ -36,13 +36,6 @@ class CartManager {
             }
             console.log("Product not found");
             return undefined;            
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    }
-    async getProductsCart() {
-        try {
-            
         } catch (error) {
             throw new Error(error.message);
         }
