@@ -10,9 +10,11 @@ productsRouter.get('/', async function(req, res) {
         const products = await productManager.getProducts();
         
         if(!limit) {
-            return res.status(200).json(products);
+            //return res.status(200).json(products);
+            return res.status(200).render('home', {products}); 
         }
-        return res.status(200).json(products.slice(0, limit)); 
+        return res.status(200).json(products.slice(0, limit));
+
     } catch (error) {
         res.status(400).json({message: 'Server error - productsRouter.get'});
     }

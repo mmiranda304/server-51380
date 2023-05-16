@@ -1,0 +1,16 @@
+
+<div class='item-list'>
+    {{#each products}}
+        <div class='item' id="item">
+        <div class='img-container'>
+            <img src={{this.thumbnail}} alt={{this.title}} />
+        </div>
+        <div class='item-body'>
+            <h5 class='item-title'>{{this.title}}</h5>
+            <p class='item-text'>${{this.price}}</p>
+        </div>
+        </div>
+    {{/each}}
+</div>
+
+<script src="/js/home.js"></script>
