@@ -21,7 +21,7 @@ export const uploader = multer({ storage });
 import { connect } from "mongoose";
 export async function connectMongo() {
   try {
-    await connect("mongodb+srv://mmiranda:btdW2Ag*A-wEFRB@backendcoder.a9snl5i.mongodb.net/ecommerce?retryWrites=true&w=majority");
+    await mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_NAME}.fv7l7mp.mongodb.net/`);
     console.log("plug to mongo!");
   } catch (e) {
     console.log(e);
