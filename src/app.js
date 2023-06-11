@@ -1,11 +1,11 @@
 import express from 'express'
 import handlebars from "express-handlebars";
-import { productsRouter } from './routes/products.router.js';
+import { productService, productsRouter } from './routes/products.router.js';
 import { cartRouter } from './routes/cart.router.js';
-import { productManager } from './routes/products.router.js';
+import { usersRouter } from './routes/users.router.js';
 import { Server } from "socket.io";
 import path from "path";
-import { __dirname } from "./utils.js";
+import { __dirname, connectMongo } from "./utils.js";
 
 const app = express();
 const port = 8080;
@@ -22,26 +22,35 @@ app.set("view engine", "handlebars");
 app.use('/products', productsRouter);
 app.use('/cart', cartRouter);
 
+//Rutas: API REST CON JSON
+app.use('/api/users', usersRouter);
+
+
 const httpServer = app.listen(port, () => {
   console.log(`Example app listening on http://localhost:${port}`);
 });
+
+connectMongo();
+
 
 const socketServer = new Server(httpServer);
 
 socketServer.on("connection", async (socket) => {       //New client connection
   console.log('New client connected '+ socket.id);
-  const products = await productManager.getProducts();
+  let products = await productService.getProducts();
   
   socket.on('newProduct', async (product) => {            //New product comm
     console.log(JSON.stringify(product));
-    await productManager.addProduct(product);
-    products = await productManager.getProducts();
+    await productService.addProduct(product);
+    products = await productService.getProducts();
+    socket.emit('newProduct', products);
   });
 
-  socket.on('deleteProduct', async (id) => {              //Delete product comm
-    console.log(JSON.stringify(id));
-    await productManager.deleteProduct(id);
-    products = await productManager.getProducts();
+  socket.on('deleteProduct', async (_id) => {              //Delete product comm
+    console.log('socket.on.delProd - id: ' + _id);
+    await productService.deleteProduct(_id);
+    products = await productService.getProducts();
+    socket.emit('newProduct', products);
   });
 
   socket.emit('newProduct', products);
@@ -49,7 +58,7 @@ socketServer.on("connection", async (socket) => {       //New client connection
 
 app.get('/realtimeproducts', async function(req, res) {
   try {
-      const products = await productManager.getProducts();
+      const products = await productService.getProducts();
       
       return res.status(200).render('realTimeProducts', {products}); 
   } catch (error) {
@@ -58,7 +67,7 @@ app.get('/realtimeproducts', async function(req, res) {
 });
 app.get('/home', async function(req, res) {
   try {
-      const products = await productManager.getProducts();
+      const products = await productService.getProducts();
       
       return res.status(200).render('home', {products}); 
   } catch (error) {

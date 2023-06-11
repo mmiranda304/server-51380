@@ -2,6 +2,7 @@
 const socket = io();
 
 socket.on('newProduct', (products) => { 
+    console.log(products);
     let formatMsg = "";
     products.forEach(product => {
         formatMsg += "<div class='item' id='item'>";
@@ -11,7 +12,7 @@ socket.on('newProduct', (products) => {
         formatMsg +=    "<div class='item-body'>";
         formatMsg +=        "<h5 class='item-title'>"+ product.title +"</h5>";
         formatMsg +=        "<p class='item-text'>$"+ product.price +"</p>";
-        formatMsg +=        "<button class='button-item' onclick='deleteProduct("+ product.id +")' >Eliminar</button>";
+        formatMsg +=        "<button class='button-item' onclick='deleteProduct(\""+ product._id +"\")' >Eliminar</button>";
         formatMsg +=    "</div>";
         formatMsg += "</div>";
     });
@@ -59,6 +60,6 @@ form.addEventListener('submit', e => {
       alert('El producto ha sido agregado correctamente'); 
 });
 
-function deleteProduct(id) {
-    socket.emit('deleteProduct', id);
+function deleteProduct(_id) {
+    socket.emit('deleteProduct', _id);
 }

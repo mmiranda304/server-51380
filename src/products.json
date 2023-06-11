@@ -1,1 +1,112 @@
-[{"id":1,"title":"Bunny Kindgom","description":"Description product 1","price":9600,"thumbnail":"./img/BUNKIN/BUNKIN_1.jpg","code":"BUNKIN","status":true,"stock":10},{"id":2,"title":"El Camarero","description":"Description product 2","price":7380,"thumbnail":"./img/CAMAR/CAMAR_1.jpg","code":"CAMAR","status":true,"stock":15},{"id":3,"title":"Fantasma Blitz","description":"Description product 3","price":7999.99,"thumbnail":"./img/BLTZF/BLTZF_2.jpg","code":"BLTZF","status":true,"stock":30},{"id":4,"title":"Betrayal at House on the Hill","description":"Description product 4","price":18860,"thumbnail":"./img/BHH/BHH_1.jpg","code":"BHH","status":true,"stock":40},{"id":5,"title":"Pandemic","description":"Description product 5","price":14710,"thumbnail":"./img/PDMC/PDMC_1.jpg","code":"PDMC","status":true,"stock":50},{"id":6,"title":"Taco Gato Cabra Queso Pizza","description":"Description product 6","price":3870,"thumbnail":"./img/TGCQP/tgcqp_1.jpg","code":"TGCQP","status":true,"stock":60},{"id":7,"title":"Throw Throw Burrito","description":"Description product 7","price":12350,"thumbnail":"./img/TTBURR/TTBURR_1.jpg","code":"TTBURR","status":true,"stock":70},{"id":8,"title":"Disney Villainous","description":"Description product 8","price":17230,"thumbnail":"./img/VLLNS/VLLNS_1.jpg","code":"VLLNS","status":true,"stock":80},{"id":9,"title":"Aventureros al tren","description":"Description product 9","price":26350,"thumbnail":"./img/AVTREN/AVTREN_1.jpg","code":"AVTREN","status":true,"stock":90},{"id":10,"title":"Catán","description":"Description product 10","price":19500,"thumbnail":"./img/CATAN/CATAN_1.jpg","code":"CATAN","status":true,"stock":100}]
+[
+    {
+        "id": 1,
+        "title": "Bunny Kindgom",
+        "description": "Description product 1",
+        "price": 9600,
+        "thumbnail": "./img/BUNKIN/BUNKIN_1.jpg",
+        "code": "BUNKIN",
+        "category": "family",
+        "status": true,
+        "stock": 10
+    },
+    {
+        "id": 2,
+        "title": "El Camarero",
+        "description": "Description product 2",
+        "price": 7380,
+        "thumbnail": "./img/CAMAR/CAMAR_1.jpg",
+        "code": "CAMAR",
+        "category": "party",
+        "status": true,
+        "stock": 15
+    },
+    {
+        "id": 3,
+        "title": "Fantasma Blitz",
+        "description": "Description product 3",
+        "price": 7999.99,
+        "thumbnail": "./img/BLTZF/BLTZF_2.jpg",
+        "code": "BLTZF",
+        "category": "family",
+        "status": true,
+        "stock": 30
+    },
+    {
+        "id": 4,
+        "title": "Betrayal at House on the Hill",
+        "description": "Description product 4",
+        "price": 18860,
+        "thumbnail": "./img/BHH/BHH_1.jpg",
+        "code": "BHH",
+        "category": "strategy",
+        "status": true,
+        "stock": 40
+    },
+    {
+        "id": 5,
+        "title": "Pandemic",
+        "description": "Description product 5",
+        "price": 14710,
+        "thumbnail": "./img/PDMC/PDMC_1.jpg",
+        "code": "PDMC",
+        "category": "strategy",
+        "status": true,
+        "stock": 50
+    },
+    {
+        "id": 6,
+        "title": "Taco Gato Cabra Queso Pizza",
+        "description": "Description product 6",
+        "price": 3870,
+        "thumbnail": "./img/TGCQP/tgcqp_1.jpg",
+        "code": "TGCQP",
+        "category": "family",
+        "status": true,
+        "stock": 60
+    },
+    {
+        "id": 7,
+        "title": "Throw Throw Burrito",
+        "description": "Description product 7",
+        "price": 12350,
+        "thumbnail": "./img/TTBURR/TTBURR_1.jpg",
+        "code": "TTBURR",
+        "category": "party",
+        "status": true,
+        "stock": 70
+    },
+    {
+        "id": 8,
+        "title": "Disney Villainous",
+        "description": "Description product 8",
+        "price": 17230,
+        "thumbnail": "./img/VLLNS/VLLNS_1.jpg",
+        "code": "VLLNS",
+        "category": "family",
+        "status": true,
+        "stock": 80
+    },
+    {
+        "id": 9,
+        "title": "Aventureros al tren",
+        "description": "Description product 9",
+        "price": 26350,
+        "thumbnail": "./img/AVTREN/AVTREN_1.jpg",
+        "code": "AVTREN",
+        "category": "strategy",
+        "status": true,
+        "stock": 90
+    },
+    {
+        "id": 10,
+        "title": "Catán",
+        "description": "Description product 10",
+        "price": 19500,
+        "thumbnail": "./img/CATAN/CATAN_1.jpg",
+        "code": "CATAN",
+        "category": "strategy",
+        "status": true,
+        "stock": 100
+    }
+]
