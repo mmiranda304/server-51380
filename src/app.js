@@ -1,9 +1,12 @@
 import express from 'express'
 import handlebars from "express-handlebars";
+import MongoStore from 'connect-mongo';
+import session from 'express-session';
+import path from "path";
 import { productsRouter } from './routes/products.router.js';
 import { cartRouter } from './routes/cart.router.js';
 import { viewsRouter } from './routes/views.router.js';
-import path from "path";
+import { authRouter } from './routes/auth.router.js';
 import { __dirname, connectMongo } from "./utils.js";
 
 const app = express();
@@ -25,8 +28,24 @@ app.set("view engine", "handlebars");
 app.use('/api/products', productsRouter);
 app.use('/api/cart', cartRouter);
 app.use('/', viewsRouter);
+app.use('/auth', authRouter);;
 
 connectMongo();
+//--------------------- SESSION ---------------------//
+// app.use(session({ 
+//   secret: 'secret', 
+//   resave: true, 
+//   saveUninitialized: true 
+// }));
+app.use(
+  session({
+    store: MongoStore.create({ mongoUrl: 'mongodb+srv://mmiranda:btdW2Ag*A-wEFRB@backendcoder.a9snl5i.mongodb.net/ecommerce?retryWrites=true&w=majority', ttl: 1000 }),
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
 
 app.get("*", (req, res) => {    // Catch all
     return res.status(400).json({

@@ -1,4 +1,3 @@
-// https://flaviocopes.com/fix-dirname-not-defined-es-module-scope/
 import path from "path";
 import { fileURLToPath } from "url";
 export const __filename = fileURLToPath(import.meta.url);
@@ -17,11 +16,12 @@ const storage = multer.diskStorage({
 });
 export const uploader = multer({ storage });
 
-/////////////////// MONGO ////////////////////////////////
+//--------------------- MONGO ---------------------//
+
 import { connect } from "mongoose";
 export async function connectMongo() {
   try {
-    await mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_NAME}.fv7l7mp.mongodb.net/`);
+    await connect(`mongodb+srv://mmiranda:btdW2Ag*A-wEFRB@backendcoder.a9snl5i.mongodb.net/ecommerce?retryWrites=true&w=majority`);
     console.log("plug to mongo!");
   } catch (e) {
     console.log(e);
