@@ -9,14 +9,14 @@ productsRouter.get('/', async function(req, res) {
         const limit = req.query.limit;
         const products = await productService.getProducts();
         if(!limit) {
-            return res.status(200).render('home', {products}); 
+            return res.status(200).json(products); 
         }
-        // AGREGAR CON LIMIT
 
     } catch (error) {
         res.status(400).json({message: 'Server error - productsRouter.get'});
     }
 });
+
 productsRouter.get('/:id', async function(req, res) {
     try {
         const id = req.params.id;
@@ -30,6 +30,7 @@ productsRouter.get('/:id', async function(req, res) {
         res.status(400).json({error: 'Server error - productsRouter.get'});
     }
 });
+
 productsRouter.post('/', async function(req, res) {
     try {
         const product = req.body;
@@ -49,6 +50,7 @@ productsRouter.post('/', async function(req, res) {
         });
     }
 });
+
 productsRouter.put('/:id', async function(req, res) {
     try {
         const id = req.params.id;
@@ -73,6 +75,7 @@ productsRouter.put('/:id', async function(req, res) {
         res.status(400).json({error: 'Server error - productsRouter.put'});
     }
 });
+
 productsRouter.delete('/:id', async function(req, res) {
     try {
         const id = req.params.id;

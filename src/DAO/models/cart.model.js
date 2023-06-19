@@ -22,10 +22,3 @@ const schemaCart = new Schema({
   versionKey: false
 });
 export const CartModel = model("carts", schemaCart);
-
-// schemaCart.pre('findOne', function () {    // PRE POPULATION
-//     this.populate('products.product');
-// });
-// schemaCart.pre('find', function () {  // PRE POPULATION
-//     this.populate('products.product');
-// });

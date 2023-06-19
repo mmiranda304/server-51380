@@ -108,5 +108,27 @@
         "category": "strategy",
         "status": true,
         "stock": 100
+    },
+    {
+        "id": 11,
+        "title": "H.D.P.",
+        "description": "Description product 11",
+        "price": 10700,
+        "thumbnail": "./img/HDP/HDP_1.jpg",
+        "code": "HDP",
+        "category": "party",
+        "status": true,
+        "stock": 50
+    },
+    {
+        "id": 12,
+        "title": "Código Secreto",
+        "description": "Description product 12",
+        "price": 12000,
+        "thumbnail": "./img/CODSEC/CODSEC_1.jpg",
+        "code": "CODSEC",
+        "category": "strategy",
+        "status": true,
+        "stock": 50
     }
 ]

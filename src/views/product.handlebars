@@ -1,0 +1,22 @@
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/css/product.css" />
+  </head>
+  <body>
+    <div class='itemDetail'>
+        <div class='img-container'>
+            <img src={{product.thumbnail}} alt="{{product.title}}" />
+        </div>
+        
+        <div class='itemDetail-body'>
+        <h5 class='item-title'>{{product.title}}</h5>
+        <p class='item-price'>${{product.price}}</p>
+        <div class='specs'>
+            <p class='item-description'>{{product.description}}</p>
+            <p class='items-category'>{{product.category}}</p>
+        </div>
+        </div>
+    </div>
+  </body>
+    <script src="/js/product.js"></script>
+</html>
