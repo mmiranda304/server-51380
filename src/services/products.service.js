@@ -112,7 +112,7 @@ export class ProductService {
 
   async getProductById(_id) {
     try {
-      const product = await ProductModel.find({ _id: _id }).lean().exec();
+      const product = await ProductModel.findOne({ _id: _id }).lean().exec();
 
       return product;
     } catch (error) {

@@ -24,6 +24,20 @@ app.engine("handlebars", handlebars.engine());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "handlebars");
 
+//--------------------- SESSION ---------------------//
+app.use(session({ 
+  secret: 'secret', 
+  resave: true, 
+  saveUninitialized: true 
+}));
+// app.use(
+//   session({
+//     store: MongoStore.create({ mongoUrl: 'mongodb+srv://mmiranda:btdW2Ag*A-wEFRB@backendcoder.a9snl5i.mongodb.net/ecommerce?retryWrites=true&w=majority', ttl: 1000 }),
+//     secret: 'secret',
+//     resave: true,
+//     saveUninitialized: true,
+//   })
+// );
 ///---------------- Routes ----------------///
 app.use('/api/products', productsRouter);
 app.use('/api/cart', cartRouter);
@@ -31,20 +45,6 @@ app.use('/', viewsRouter);
 app.use('/auth', authRouter);;
 
 connectMongo();
-//--------------------- SESSION ---------------------//
-// app.use(session({ 
-//   secret: 'secret', 
-//   resave: true, 
-//   saveUninitialized: true 
-// }));
-app.use(
-  session({
-    store: MongoStore.create({ mongoUrl: 'mongodb+srv://mmiranda:btdW2Ag*A-wEFRB@backendcoder.a9snl5i.mongodb.net/ecommerce?retryWrites=true&w=majority', ttl: 1000 }),
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true,
-  })
-);
 
 
 app.get("*", (req, res) => {    // Catch all

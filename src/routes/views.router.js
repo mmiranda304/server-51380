@@ -23,7 +23,9 @@ viewsRouter.get('/products', async function(req, res) {
     try {
         const { limit = 10, page = 1, sort, query } = req.query;
         const queryParams = { limit, page, sort, query };
-        
+        const {firstName, email, password, isAdmin} = req.session;
+        const user = {firstName, email, password, isAdmin};
+
         const {
             payload: products,
             totalPages,
@@ -38,6 +40,7 @@ viewsRouter.get('/products', async function(req, res) {
         } = await productService.getProductsView(queryParams);
 
         return res.render('products', {
+            user: user,
             products: payload,
             totalPages,
             prevPage,
@@ -56,21 +59,23 @@ viewsRouter.get('/products', async function(req, res) {
   viewsRouter.get('/product/:id', async function(req, res) {
     try {
         const id = req.params.id;
+        const {firstName, email, password, isAdmin} = req.session;
+        const user = {firstName, email, password, isAdmin};
         const product = await productService.getProductById(id);
         
-        if(!product.length) {
+        if(!product) {
             return res.status(404).json({error: `Product id '${id}' not found`});
         }
         const Simplifiedproduct = {
-            _id: product[0]._id.toString(),
-            title: product[0].title,
-            description: product[0].description,
-            price: product[0].price,
-            thumbnail: product[0].thumbnail,
-            category: product[0].category,
+            _id: product._id.toString(),
+            title: product.title,
+            description: product.description,
+            price: product.price,
+            thumbnail: product.thumbnail,
+            category: product.category,
         };
         
-        return res.status(200).render('product', {product: Simplifiedproduct});
+        return res.status(200).render('product', {user: user, product: Simplifiedproduct});
     } catch (error) {
         res.status(400).json({message: 'Server error - viewsRouter.getProduct: ' + error});
     }
@@ -79,14 +84,16 @@ viewsRouter.get('/products', async function(req, res) {
   viewsRouter.get('/cart/:id', async function(req, res) {
     try {
         const id = req.params.id;
+        const {firstName, email, password, isAdmin} = req.session;
+        const user = {firstName, email, password, isAdmin};
         const cart = await cartService.getCartById(id);
         
-        if(!cart.length) {
+        if(!cart) {
             return res.status(404).json({error: `cart id '${id}' not found`});
         }
         console.log(cart);
         console.log(cart.products);
-        const simplifiedCart = cart[0].products.map((item) => {
+        const simplifiedCart = cart.products.map((item) => {
             return {
                 title: item.product.title,
                 price: item.product.price,
@@ -95,7 +102,7 @@ viewsRouter.get('/products', async function(req, res) {
             };
         });
         console.log(simplifiedCart);
-        return res.status(200).render('cart', {cart: simplifiedCart});
+        return res.status(200).render('cart', {user: user, cart: simplifiedCart});
     } catch (error) {
         res.status(400).json({message: 'Server error - viewsRouter.getCart: ' + error});
     }

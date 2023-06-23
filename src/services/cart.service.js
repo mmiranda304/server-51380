@@ -10,13 +10,13 @@ export class CartService {
             const cartExists = await CartModel.findOne({_id: cid});
             const productExists = await productService.getProductById(pid);
 
-            if(!cartExists && !productExists.length) {
+            if(!cartExists && !productExists) {
                 throw new Error('Cart and product IDs not found. Please verify and try again');
             }
             if(!cartExists) {
                 throw new Error('Cart not found');
             }
-            if(!productExists.length) {
+            if(!productExists) {
                 throw new Error('Product does not exists');
             }
             return cartExists;
@@ -37,7 +37,7 @@ export class CartService {
 
     async getCartById(_id) {        // Get Cart by ID
         try {
-            const cart = await CartModel.find({_id: _id}).populate('products.product');
+            const cart = await CartModel.findOne({_id: _id}).populate('products.product');
             return cart;
 
         } catch (error) {

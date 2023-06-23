@@ -3,6 +3,12 @@
     <link rel="stylesheet" href="/css/products.css" />
   </head>
   <body>
+    <div>
+        <h1>Bienvenido {{user.firstName}}!</h1>
+        {{#if user.isAdmin}}
+            <h1>Administrador</h1>
+        {{/if}}
+    </div>
     <div class='item-list'>
         {{#each products}}
             <div class='item' id="item">

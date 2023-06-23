@@ -28,16 +28,16 @@ authRouter.get('/logout', (req, res) => {               // Logout page
   });
   
   authRouter.post('/login', async (req, res) => {       // Login POST
-      // console.log(req.body.email);
-      // console.log(req.body.password);
       const email = req.body.email;
       const password = req.body.password;
       const usuarioEncontrado = await UserModel.findOne({email: email});
       if(usuarioEncontrado && usuarioEncontrado.password === password) {
-          req.session.email = usuarioEncontrado.email;
-          req.session.isAdmin = usuarioEncontrado.isAdmin;
+        req.session.firstName = usuarioEncontrado.firstName;
+        req.session.email = usuarioEncontrado.email;
+        req.session.password = usuarioEncontrado.password;
+        req.session.isAdmin = usuarioEncontrado.isAdmin;
          
-          return res.redirect("/auth/perfil");      // Acá redirigo a products y agrego mensaje de bienvenida con datos de usuario
+          return res.redirect("/products");
       }
       else {
           return res.status(401).render("error", { error: 'Email o contraseña erróneos'});
@@ -55,22 +55,8 @@ authRouter.get('/logout', (req, res) => {               // Logout page
             return res.status(400).render("error", { error: 'Completar todos los campos correctamente'});
         }
         await UserModel.create({ email, password, firstName, lastName, isAdmin: false});
-        
-        console.log('email', email);
-        console.log('req.session', req.session);
-        if (req.session) {
-            req.session.email = email;
-            req.session.isAdmin = false;
-            return res.redirect("/auth/perfil");
-          } else {
-            // Manejar el caso cuando req.session no está definido
-            return res.status(500).render("error", { error: 'Error en la configuración de sesiones'});
-          }
 
-        // req.session.email = email;
-        // req.session.isAdmin = false;
-        
-        // return res.redirect("/auth/perfil");        // Acá redirigo a products y agrego mensaje de bienvenida con datos de usuario
+        return res.redirect("/auth/login");
       } catch (error) {
           console.log(error);
           return res.status(400).render("error", { error: 'No se pudo crear el usuario. Intente con otro mail'});

@@ -3,24 +3,30 @@
     <link rel="stylesheet" href="/css/products.css" />
   </head>
   <body>
+    <div>
+      <h1>Bienvenido {{user.firstName}}!</h1>
+      {{#if user.isAdmin}}
+        <h1>Administrador</h1>
+      {{/if}}
+    </div>
     <h1>Carrito</h1>
     {{#if cart.length}}
-        <div class='item-list'>
-            {{#each cart}}
-                <div class='item' id="item">
-                <div class='img-container'>
-                    <img src="{{this.thumbnail}}" alt="{{this.title}}" />
-                </div>
-                <div class='item-body'>
-                    <h5 class='item-title'>{{this.title}}</h5>
-                    <p class='item-text'>${{this.price}}</p>
-                    <p class='item-text'>Cantidad: {{this.quantity}}</p>
-                </div>
-                </div>
-            {{/each}}
-        </div>
+      <div class='item-list'>
+        {{#each cart}}
+          <div class='item' id="item">
+          <div class='img-container'>
+            <img src="{{this.thumbnail}}" alt="{{this.title}}" />
+          </div>
+          <div class='item-body'>
+            <h5 class='item-title'>{{this.title}}</h5>
+            <p class='item-text'>${{this.price}}</p>
+            <p class='item-text'>Cantidad: {{this.quantity}}</p>
+          </div>
+          </div>
+        {{/each}}
+      </div>
     {{else}}
-        <p>Carrito vacío</p>
+      <p>Carrito vacío</p>
     {{/if}}
   </body>
   <script src="/js/products.js"></script>
