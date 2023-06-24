@@ -2,7 +2,7 @@ const API_URL = "http://localhost:8080/api";
 let cartId = localStorage.getItem("cart-id");
 
 if (!cartId) {
-    alert("no id");
+    // alert("no id");
     const url = API_URL + "/cart";
     const data = {};
     const options = {

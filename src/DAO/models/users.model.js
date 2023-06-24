@@ -19,6 +19,12 @@ const schemaUser = new Schema({
     max: 100, 
     unique:true 
   },
+  age: {
+    type: Number,
+    require: true,
+    min: 18,
+    max: 110
+  },
   password: {
     type: String,
     required: true,

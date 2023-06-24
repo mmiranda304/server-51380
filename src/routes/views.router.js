@@ -1,6 +1,8 @@
 import express from "express";
 import { ProductService } from "../services/products.service.js";
 import { CartService } from "../services/cart.service.js";
+import { UserModel } from '../DAO/models/users.model.js';
+import { createHash, isValidPassword } from '../utils.js';
 
 export const viewsRouter = express.Router();
 const productService = new ProductService();
@@ -10,15 +12,93 @@ viewsRouter.get('/', async function(req, res) {     // TERMINAR
     try {
         const { limit = 10, page = 1, sort, query } = req.query;
         const queryParams = { limit, page, sort, query };
+        const user = req.session.user;
 
-        const products = productService.getProductsView();
+        const {
+            payload: products,
+            totalPages,
+            payload,
+            prevPage,
+            nextPage,
+            page: currentPage,
+            hasPrevPage,
+            hasNextPage,
+            prevLink,
+            nextLink,
+        } = await productService.getProductsView(queryParams);
 
-        return res.status(200).render('home', {products}); 
-    
+        return res.render('products', {
+            user: user,
+            products: payload,
+            totalPages,
+            prevPage,
+            nextPage,
+            currentPage,
+            hasPrevPage,
+            hasNextPage,
+            prevLink,
+            nextLink
+        });
     } catch (error) {
-        res.status(400).json({message: 'Server error - productsRouter.get: ' + error});
+        res.status(400).json({message: 'Server error - viewsRouter.getHome: ' + error});
     }
   });
+
+viewsRouter.get('/login', (req, res) => {              // Login Page
+    return res.render('login', {});
+});
+  
+viewsRouter.post('/login', async (req, res) => {       // Login POST
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+
+        const user = await UserModel.findOne({email: email});
+        if(user && !isValidPassword(user.password, password)) {
+            delete user.password;
+            req.session.user = user;
+
+            return res.redirect("/");
+        }
+        else {
+            return res.status(401).render("error", { error: 'Email o contraseña erróneos'});
+        }
+        
+    } catch (error) {
+        return res.status(400).render("error", { message: 'Server error - viewsRouter.postLogin: ' + error});
+    }
+});
+
+viewsRouter.get('/register', (req, res) => {           // Register Page
+    return res.render('register', {});
+});
+
+viewsRouter.post('/register', async (req, res) => {    // Register POST
+    try {
+        let { email, password, firstName, lastName } = req.body;
+        if (!email || !password || !firstName || !lastName) {
+            return res.status(400).render("error", { error: 'Completar todos los campos correctamente'});
+        }
+        password = createHash(password);
+        await UserModel.create({ email, password, firstName, lastName, isAdmin: false});
+
+        return res.redirect("/login");
+    } catch (error) {
+        console.log(error);
+        return res.status(400).render("error", { error: 'No se pudo crear el usuario. Intente con otro mail'});
+    }
+        
+});
+
+viewsRouter.get('/logout', (req, res) => {               // Logout page
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).render('error', {error: 'no se pudo cerrar la sesión'});
+      }
+      res.redirect('/login')
+    });
+});
+
 viewsRouter.get('/products', async function(req, res) {
     try {
         const { limit = 10, page = 1, sort, query } = req.query;
