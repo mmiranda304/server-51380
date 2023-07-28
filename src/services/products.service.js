@@ -1,7 +1,6 @@
-import { ProductModel } from '../DAO/models/products.model.js';
+import { productsDAO } from '../DAO/classes/products.dao.js';
 
-
-export class ProductService {
+class ProductsService {
 
   async validateProduct(product) {
     try {
@@ -19,13 +18,13 @@ export class ProductService {
         throw new Error('validation error: Please try again completing all the fields correctly.');
       }
 
-      const codeExists = await ProductModel.exists({code: product.code});
+      const codeExists = await productsDAO.verifyCode(product);
       if(codeExists) {
         console.log('validation error: The code already exists. Please try again with a new code.');
         throw new Error('validation error: The code already exists. Please try again with a new code.');
       }
     } catch (error) {
-      throw new Error('ProductService.clearCart: ' + error);
+      throw new Error('ProductsService.clearCart: ' + error);
     }
   }
 
@@ -40,24 +39,24 @@ export class ProductService {
         throw new Error('validation error: Please try again completing the fields correctly.');
       }
       if(product.code) {
-        const codeExists = await ProductModel.exists({code: product.code});
+        const codeExists = await productsDAO.verifyCode(product);
         if(codeExists && codeExists._id != _id) {                                         // Only if the code belong to another product
           console.log('validation error: The code already exists. Please try again with a new code.');
           throw new Error('validation error: The code already exists. Please try again with a new code.');
         }
       }
     } catch (error) {
-      throw new Error('ProductService.validateUpdateProduct: ' + error);
+      throw new Error('ProductsService.validateUpdateProduct: ' + error);
     }
   }
 
   async getProducts() { 
     try {
-      const products = await ProductModel.find({}).lean();
+      const products = await productsDAO.getProducts();
 
       return products;
     } catch (error) {
-      throw new Error('ProductService.getProducts: ' + error);
+      throw new Error('ProductsService.getProducts: ' + error);
     }
   }
 
@@ -79,7 +78,7 @@ export class ProductService {
           sort: sort === "desc" ? "-price" : "price",
       };
 
-      const products = await ProductModel.paginate(filter, options);
+      const products = await productsDAO.paginate(filter, options);
 
       const productsSimplified = products.docs.map((item) => {
         return {
@@ -106,17 +105,16 @@ export class ProductService {
 
       return response;
     } catch (error) {
-      throw new Error('ProductService.getProductsPage: ' + error);
+      throw new Error('ProductsService.getProductsPage: ' + error);
     }   
   }
 
   async getProductById(_id) {
     try {
-      const product = await ProductModel.findOne({ _id: _id }).lean().exec();
-
+      const product = await productsDAO.getProductById(_id);
       return product;
     } catch (error) {
-      throw new Error('ProductService.getProductById: ' + error);
+      throw new Error('ProductsService.getProductById: ' + error);
     }
     
   }
@@ -124,32 +122,33 @@ export class ProductService {
   async addProduct(product) {
     try {
       await this.validateProduct(product);
-      const productCreated = await ProductModel.create( product );
+      const productCreated = await productsDAO.addProduct(product);
 
       return productCreated;
     } catch (error) {
-      throw new Error('ProductService.addProduct: ' + error);
+      throw new Error('ProductsService.addProduct: ' + error);
     }
   }
 
   async deleteProduct(_id) {
     try {
-      const productDeleted = await ProductModel.deleteOne({ _id: _id });
+      const productDeleted = await productsDAO.deleteProduct(_id);
 
       return productDeleted;
     } catch (error) {
-      throw new Error('ProductService.deleteProduct: ' + error);
+      throw new Error('ProductsService.deleteProduct: ' + error);
     }
   }
 
   async updateProduct(_id, product) {
     try {
       await this.validateUpdateProduct(_id, product);
-      const productUptaded = await ProductModel.updateOne({ _id: _id }, { $set: product }, { new: true });
+      const productUptaded = await productsDAO.updateProduct(_id, product);
 
       return await this.getProductById(_id);
     } catch (error) {
-      throw new Error('ProductService.updateProduct: ' + error);
+      throw new Error('ProductsService.updateProduct: ' + error);
     }
   }
 }
+export const productsService = new ProductsService();

@@ -3,18 +3,20 @@ import handlebars from "express-handlebars";
 import MongoStore from 'connect-mongo';
 import session from 'express-session';
 import passport from 'passport';
-
 import path from "path";
+import config from "./config/config.js";
+
 import { productsRouter } from './routes/products.router.js';
 import { cartRouter } from './routes/cart.router.js';
-import { viewsRouter } from './routes/views.router.js';
+import { usersRouter } from './routes/users.router.js';
 import { authRouter } from './routes/auth.router.js';
 import { sessionsRouter } from './routes/sessions.router.js';
+import { viewsRouter } from './routes/views.router.js';
 import { __dirname, connectMongo } from "./utils.js";
 import { iniPassport } from './config/passport.config.js';
 
 const app = express();
-const port = 8080;
+const port = process.env.port;
 
 export const httpServer = app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`);
@@ -31,7 +33,10 @@ app.set("view engine", "handlebars");
 //--------------------- SESSION ---------------------//
 app.use(
   session({
-    store: MongoStore.create({ mongoUrl: 'mongodb+srv://mmiranda:btdW2Ag*A-wEFRB@backendcoder.a9snl5i.mongodb.net/ecommerce?retryWrites=true&w=majority', ttl: 1000 }),
+    store: MongoStore.create({ 
+      mongoUrl: process.env.MONGO_URL, 
+      ttl: 5000 
+    }),
     secret: 'secret',
     resave: true,
     saveUninitialized: true,
@@ -44,6 +49,7 @@ app.use(passport.session());
 ///---------------- Routes ----------------///
 app.use('/api/products', productsRouter);
 app.use('/api/cart', cartRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/sessions', sessionsRouter);
 app.use('/', viewsRouter);
 app.use('/auth', authRouter);;

@@ -1,16 +1,89 @@
 import passport from 'passport';
-import { UserModel } from '../DAO/models/users.model.js';
-import fetch from 'node-fetch';
+import local from 'passport-local'
 import GitHubStrategy from 'passport-github2';
+import fetch from 'node-fetch';
+import { createHash, isValidPassword } from '../utils.js';
+import { cartService } from '../services/cart.service.js';
+import { usersService } from '../services/users.service.js';
+
+const LocalStrategy = local.Strategy;
 
 export function iniPassport() {
+
+  passport.use(
+    'login',
+    new LocalStrategy(
+      { usernameField: 'email' }, 
+      async (username, password, done) => {
+        try {
+          const user = await usersService.getUserByEmail(username);
+          if (!user) {
+            console.log('User Not Found with username (email) ' + username);
+            return done(null, false);
+          }
+          if (!isValidPassword(password, user.password)) {
+            console.log('Invalid Password');
+            return done(null, false);
+          }
+
+          return done(null, user);
+        } catch (err) {
+          return done(err);
+        }
+      }
+    )
+  );
+
+  passport.use(
+    'register',
+    new LocalStrategy(
+      {
+        passReqToCallback: true,
+        usernameField: 'email',
+      },
+      async (req, username, password, done) => {
+        try {
+          const { firstName, lastName, age } = req.body;
+          let user = await usersService.getUserByEmail(username);
+          if (user) {
+            console.log('User already exists');
+            return done(null, false);
+          }
+
+          const newCart = await cartService.addCart();
+          const cartID = newCart._id.toString();
+          const newUser = {
+            email: username,
+            firstName,
+            lastName,
+            age: Number(age),
+            password: createHash(password),
+            cart: cartID,
+            role: "user",
+            isAdmin: "false"
+          };
+
+          let userCreated = await usersService.addUser(newUser);
+          console.log(userCreated);
+          console.log('User Registration succesful');
+          
+          return done(null, userCreated);
+        } catch (e) {
+          console.log('Error in register');
+          console.log(e);
+          return done(e);
+        }
+      }
+    )
+  );
+
   passport.use(
     'github',
     new GitHubStrategy(
       {
-        clientID: '',
-        clientSecret: '',
-        callbackURL: '',
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: process.env.GITHUB_CALLBACK_URL,
       },
       async (accesToken, _, profile, done) => {
         console.log(profile);
@@ -30,7 +103,7 @@ export function iniPassport() {
           }
           profile.email = emailDetail.email;
 
-          let user = await UserModel.findOne({ email: profile.email });
+          let user = await usersService.getUserByEmail(profile.email);
           if (!user) {
             const newUser = {
               email: profile.email,
@@ -39,7 +112,7 @@ export function iniPassport() {
               isAdmin: false,
               password: 'nopass',
             };
-            let userCreated = await UserModel.create(newUser);
+            let userCreated = await usersService.addUser(newUser);
             console.log('User Registration successful');
             return done(null, userCreated);
           } else {
@@ -60,7 +133,7 @@ export function iniPassport() {
   });
 
   passport.deserializeUser(async (id, done) => {
-    let user = await UserModel.findById(id);
+    let user = await usersService.getUserById(id);
     done(null, user);
   });
 }

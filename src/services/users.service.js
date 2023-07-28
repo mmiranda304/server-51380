@@ -1,32 +1,77 @@
 import { UserModel } from '../DAO/models/users.model.js';
+import { cartService } from './cart.service.js';
+import { createHash } from '../utils.js';
+import { usersDAO } from '../DAO/classes/users.dao.js';
 
-export class UserService {
-  validateUser(firstName, lastName, email) {
-    if (!firstName || !lastName || !email) {
-      console.log('validation error: please complete firstName, lastname and email.');
-      throw new Error('validation error: please complete firstName, lastname and email.');
+class UsersService {
+  validateUser(firstName, lastName, email, age) {
+    if ( !firstName || !lastName || !email || !age ) {
+      console.log('validation error: please complete firstName, lastname, email and age.');
+      throw new Error('validation error: please complete firstName, lastname, email and age.');
     }
   }
-  async getAll() {
-    const users = await UserModel.find({});
-    return users;
+  
+  async getUsers() {
+    try {
+      return await UserModel.find({});
+    } catch (error) {
+      throw new Error('UsersService.getUsers: ' + error);
+    }
   }
 
-  async createOne(firstName, lastName, email) {
-    this.validateUser(firstName, lastName, email);
-    const userCreated = await UserModel.create({ firstName, lastName, email });
-    return userCreated;
+  async getUserByEmail(email) {
+    try {
+      return await usersDAO.getUserByEmail(email);
+    } catch (error) {
+      throw new Error('UsersService.getUserByEmail: ' + error);
+    }
   }
 
-  async deletedOne(_id) {
-    const userDeleted = await UserModel.deleteOne({ _id: _id });
-    return userDeleted;
+  async getUserById(_id) {
+    try {
+      return await usersDAO.getUserById(_id);
+    } catch (error) {
+      throw new Error('UsersService.getUserById: ' + error);
+    }
   }
 
-  async updateOne(_id, firstName, lastName, email) {
-    if (!_id) throw new Error('invalid _id');
-    this.validateUser(firstName, lastName, email);
-    const userUptaded = await UserModel.updateOne({ _id }, { firstName, lastName, email });
-    return userUptaded;
+  async addUser(firstName, lastName, email, age, isAdmin, role, password) {
+    try { 
+      this.validateUser(firstName, lastName, email, age, role, password);
+      const newCart = await cartService.addCart();
+      const cartID = newCart._id.toString();
+      const newUser = {
+        email: email,
+        firstName,
+        lastName,
+        age: Number(age),
+        password: createHash(password),
+        cart: cartID,
+        isAdmin,
+        role,
+      };
+      return await usersDAO.addUser(newUser);
+    } catch (error) {
+      throw new Error('UsersService.addUser: ' + error);
+    }
+  }
+
+  async updateUser(_id, firstName, lastName, email, age, isAdmin, role) {
+    try { 
+      this.validateUser(firstName, lastName, email, age);
+      
+      return await usersDAO.updateUser(_id, firstName, lastName, email, age, isAdmin, role);
+    } catch (error) {
+      throw new Error('UsersService.updateUser: ' + error);
+    }
+  }
+
+  async deleteUser(_id) {
+    try {
+      return await usersDAO.deleteUser(_id);
+    } catch (error) {
+      throw new Error('UsersService.deletedUser: ' + error);
+    }
   }
 }
+export const usersService = new UsersService();
