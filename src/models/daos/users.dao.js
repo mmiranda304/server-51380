@@ -1,4 +1,4 @@
-import { UserModel } from "../models/users.model.js";
+import { UserModel } from "../schemas/users.schema.js";
 
 class UsersDAO {
     async getUsers() {
@@ -19,7 +19,7 @@ class UsersDAO {
 
     async getUserById(_id) {
       try { 
-        return await UserModel.findOne({ _is: _id });;
+        return await UserModel.findOne({ _id: _id });;
       } catch (error) {
         throw new Error('UsersDAO.getUserById: ' + error);
       }
@@ -45,7 +45,7 @@ class UsersDAO {
         try {
             return await UserModel.deleteOne({ _id: _id });
         } catch (error) {
-          throw new Error('UsersDAO.deletedUser: ' + error);
+          throw new Error('UsersDAO.deleteUser: ' + error);
         }
       }
   }

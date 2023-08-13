@@ -1,2 +1,22 @@
-<h1>Algo salió mal</h1>
-{{error}}
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/css/products.css" />
+  </head>
+  <nav>
+        <a class='navLink' href="/"><img src="/img/BrandLogo.jpg" alt="logo" /> </a>
+        <div class="login">
+            {{#if user}}
+                <a class="btn-login" href="/current">Mis datos</a>
+                <a class="btn-login" href="/logout">Salir</a>
+            {{else}}
+            <a class="btn-login" href="/login">Iniciar sesion</a>
+            <a class="btn-login" href="/register">Registrarse</a>
+            {{/if}}
+        </div>
+    </nav>
+    <body>
+        <h1>Algo salió mal</h1>
+        {{error}}
+    </body>
+</html>
+

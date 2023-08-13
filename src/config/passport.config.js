@@ -13,8 +13,11 @@ export function iniPassport() {
   passport.use(
     'login',
     new LocalStrategy(
-      { usernameField: 'email' }, 
-      async (username, password, done) => {
+      {
+        usernameField: 'email',
+        passReqToCallback: true,
+      }, 
+      async (req, username, password, done) => {
         try {
           const user = await usersService.getUserByEmail(username);
           if (!user) {
@@ -25,6 +28,12 @@ export function iniPassport() {
             console.log('Invalid Password');
             return done(null, false);
           }
+          req.session.email = user.email;
+          req.session.firstName = user.firstName;
+          req.session.lastName = user.lastName;
+          req.session.age = user.age;
+          req.session.role = user.role;
+          req.session.cart = user.cart;
 
           return done(null, user);
         } catch (err) {
@@ -49,23 +58,16 @@ export function iniPassport() {
             console.log('User already exists');
             return done(null, false);
           }
-
-          const newCart = await cartService.addCart();
-          const cartID = newCart._id.toString();
           const newUser = {
             email: username,
             firstName,
             lastName,
-            age: Number(age),
-            password: createHash(password),
-            cart: cartID,
+            age,
+            password,
             role: "user",
             isAdmin: "false"
           };
-
           let userCreated = await usersService.addUser(newUser);
-          console.log(userCreated);
-          console.log('User Registration succesful');
           
           return done(null, userCreated);
         } catch (e) {

@@ -1,41 +1,54 @@
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="/css/products.css" />
-  </head>
-  <body>
-    <div>
-        <h1>Bienvenido {{user.firstName}}!</h1>
-        {{#if user.isAdmin}}
-            <h1>Administrador</h1>
-        {{/if}}
-    </div>
-    <div class='item-list'>
-        {{#each products}}
-            <div class='item' id="item">
-            <div class='img-container'>
-                <img src={{this.thumbnail}} alt={{this.title}} />
-            </div>
-            <div class='item-body'>
-                <h5 class='item-title'>{{this.title}}</h5>
-                <p class='item-text'>${{this.price}}</p>
-                <a class='button-item' href="/product/{{this._id}}">Ver producto</a>
-                <a class='button-item' onclick="addToCart('{{this._id}}')">Agregar al carrito</a>
-            </div>
-            </div>
-        {{/each}}
-    </div>
+    <head>
+        <link rel="stylesheet" href="/css/products.css" />
+    </head>
+    <nav>
+        <a class='navLink' href="/"><img src="/img/BrandLogo.jpg" alt="logo" /> </a>
+        <div class="login">
+            {{#if user}}
+                <a class="btn-login cartID" id="{{user.cart}}" href="/current">Mis datos</a>
+                <a href="/cart/{{user.cart}}">Ver Carrito</a>
+                <a class="btn-login" href="/logout">Salir</a>
+            {{else}}
+            <a class="btn-login" href="/login">Iniciar sesion</a>
+            <a class="btn-login" href="/register">Registrarse</a>
+            {{/if}}
+        </div>
+    </nav>
+    <body>
+        <div>
+            <h1>Bienvenido {{user.firstName}}!</h1>
+            {{#if user.isAdmin}}
+                <h1>Administrador</h1>
+            {{/if}}
+        </div>
+        <div class='item-list'>
+            {{#each products}}
+                <div class='item' id="item">
+                <div class='img-container'>
+                    <img src={{this.thumbnail}} alt={{this.title}} />
+                </div>
+                <div class='item-body'>
+                    <h5 class='item-title'>{{this.title}}</h5>
+                    <p class='item-text'>${{this.price}}</p>
+                    <a class='button-item' href="/product/{{this._id}}">Ver producto</a>
+                    <a class='button-item' onclick="addToCart('{{this._id}}')">Agregar al carrito</a>
+                </div>
+                </div>
+            {{/each}}
+        </div>
 
-    <div class="pagination">
-        {{#if prevLink}}
-            <a href="{{prevLink}}">&laquo;</a>
-        {{/if}}
-        {{#if currentPage}}
-            <a>{{currentPage}}</a>
-        {{/if}}
-        {{#if nextLink}}
-            <a href="{{nextLink}}">&raquo;</a>
-        {{/if}}
-    </div>
-  </body>
-  <script src="/js/products.js"></script>
+        <div class="pagination">
+            {{#if prevLink}}
+                <a href="{{prevLink}}">&laquo;</a>
+            {{/if}}
+            {{#if currentPage}}
+                <a>{{currentPage}}</a>
+            {{/if}}
+            {{#if nextLink}}
+                <a href="{{nextLink}}">&raquo;</a>
+            {{/if}}
+        </div>
+    </body>
+    <script src="/js/products.js"></script>
 </html>

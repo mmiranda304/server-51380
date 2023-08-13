@@ -1,4 +1,4 @@
-import { productsDAO } from '../DAO/classes/products.dao.js';
+import { productsDAO } from '../models/daos/products.dao.js';
 
 class ProductsService {
 

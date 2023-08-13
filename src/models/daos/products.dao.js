@@ -1,4 +1,4 @@
-import { ProductModel } from "../models/products.model.js";
+import { ProductModel } from "../schemas/products.schema.js";
 
 class ProductsDAO {
 
@@ -20,7 +20,8 @@ class ProductsDAO {
 
     async getProductById(_id){
         try {
-            return await ProductModel.findOne({ _id: _id }).lean().exec();
+            return await ProductModel.findOne({ _id: _id });
+            // return await ProductModel.findOne({ _id: _id }).lean().exec();
         } catch (error) {
             throw new Error('ProductsDAO.getProduct: ' + error);
         }

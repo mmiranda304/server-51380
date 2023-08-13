@@ -1,4 +1,6 @@
 import { cartService } from "../services/cart.service.js";
+import { UsersDTO } from "../models/dtos/user.dto.js";
+import { ticketsService } from "../services/tickets.service.js";
 
 class CartController {
 
@@ -53,9 +55,7 @@ class CartController {
             if(!cart) {
                 return res.status(404).json({error: `cart id '${id}' not found`});
             }
-            console.log(cart);
-            console.log(cart.products);
-            const simplifiedCart = cart.products.map((item) => {
+            const simplifiedProducts = cart.products.map((item) => {
                 return {
                     title: item.product.title,
                     price: item.product.price,
@@ -63,6 +63,10 @@ class CartController {
                     quantity: item.quantity,
                 };
             });
+            const simplifiedCart = {
+                _id: cart._id,
+                products: simplifiedProducts,
+            };
             return res.status(200).render('cart', {user: user, cart: simplifiedCart});
         } catch (error) {
             console.error('Error in ViewsController.getCart:', error);
@@ -188,5 +192,49 @@ class CartController {
             });
         }
     }
+
+    async purchaseCart(req, res) {
+        try {
+            const { cid } =  req.params;
+            const cartList = req.body;
+            const user = new UsersDTO(req.session.user);
+            const ticket = await ticketsService.purchaseCart(cid, cartList, user.email);
+            return res.status(201).json({
+                status: "success", 
+                msg: 'Cart purchased',
+                payload: ticket,
+            });
+        } catch (error) {
+            console.error('Error in CartController.purchaseCart:', error);
+            return res.status(400).json({
+                status: 'error',
+                error: 'cart.controller - An error occurred while purchasing cart',
+            });
+        }
+    }
+
+    async getTicketById(req, res) {
+        try {
+            const { tid } =  req.params;
+            const ticket = await ticketsService.getTicketById(tid);
+            if(!ticket) {
+                return res.status(404).json({
+                    status: 'error',
+                    error: `ticket id '${tid}' not found`,
+                });
+            }
+            const user = req.session.user;
+            
+            return res.render('ticket', { ticket: ticket, user: req.session.user } );
+        } catch (error) {
+            console.error('Error in CartController.getTicketById:', error);
+            return res.status(400).json({
+                status: 'error',
+                error: 'cart.controller - Error get ticket',
+            });
+        }
+    }
 }
 export const cartController = new CartController();
+
+

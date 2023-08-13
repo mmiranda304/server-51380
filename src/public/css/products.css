@@ -90,7 +90,7 @@ h1 {
     text-align: center;
     font-family: 'Open Sans','Segoe UI', sans-serif;
 }
-.item-body .button-item {
+.button-item {
     margin: 10px auto;
     padding: 5px 15px;
     width: 130px;
@@ -105,7 +105,7 @@ h1 {
     border-radius: 4px;
     cursor: pointer;
 }
-.item-body .button-item:hover, .input-endForm:hover{
+.button-item:hover, .input-endForm:hover{
     opacity: 0.9;
 }
 .pagination {

@@ -1,0 +1,31 @@
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="/css/profile.css" />
+    </head>
+    <nav>
+        <a class='navLink' href="/"><img src="/img/BrandLogo.jpg" alt="logo" /> </a>
+        <div class="login">
+            {{#if user}}
+                <a class="btn-login" href="/current">Mis datos</a>
+                <a class="btn-login" href="/logout">Salir</a>
+            {{else}}
+            <a class="btn-login" href="/login">Iniciar sesion</a>
+            <a class="btn-register" href="/register">Registrarse</a>
+            {{/if}}
+        </div>
+    </nav>
+    <body>
+        <h1 class="profile-title">Mi Cuenta</h1>
+        <div class="profile-container">
+            {{#if user.isAdmin}}
+            <span>Administrador</span>
+            {{/if}}
+            <span> Nombre: {{user.firstName}}</span>
+            <span> Apellido: {{user.lastName}}</span>
+            <span> Email: {{user.email}}</span>
+            <span> Edad: {{user.age}}</span>
+        <a href="/cart/{{user.cart}}">Ver Carrito</a>
+        <a href="/logout">Cerrar Sesión</a>
+        </div>
+    </body>
+</html>

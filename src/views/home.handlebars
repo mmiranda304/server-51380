@@ -3,6 +3,19 @@
     <link rel="stylesheet" href="/css/products.css" />
   </head>
   <body>
+    <nav>
+      <a class='navLink' href="/"><img src="/img/BrandLogo.jpg" alt="logo" /> </a>
+      <div class="login">
+            {{#if user}}
+                <a class="btn-login" href="/current">Mis datos</a>
+                <a href="/cart/{{user.cart}}">Ver Carrito</a>
+                <a class="btn-login" href="/logout">Salir</a>
+            {{else}}
+            <a class="btn-login" href="/login">Iniciar sesion</a>
+            <a class="btn-login" href="/register">Registrarse</a>
+            {{/if}}
+        </div>
+    </nav>
     <div>
         <h1>Bienvenido {{user.firstName}}!</h1>
         {{#if user.isAdmin}}

@@ -1,32 +1,11 @@
 const API_URL = "http://localhost:8080/api";
-let cartId = localStorage.getItem("cart-id");
+const cartIdElement = document.getElementsByClassName('cartID')[0];
 
-if (!cartId) {
-    // alert("no id");
-    const url = API_URL + "/cart";
-    const data = {};
-    const options = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    };
-    fetch(url, options)
-    .then((response) => response.json())
-    .then((data) => {
-        console.log("Response:", data);
-        console.log(data);
-        const cartId = localStorage.setItem("cart-id", data.data._id);
-    })
-    .catch((error) => {
-        console.error("Error:", error);
-        alert(JSON.stringify(error));
-    });
-}
-
-function addToCart(_id) {
-    cartId = localStorage.getItem("cart-id");
+const addToCart = (_id) => {
+    const cartId = cartIdElement?.getAttribute('id');
+    if (cartId === undefined) {
+        window.location.href = '/login';
+    }
     const url = API_URL + "/cart/" + cartId + "/product/" + _id;
     const data = {};
     const options = {
@@ -36,15 +15,12 @@ function addToCart(_id) {
         },
         body: JSON.stringify(data),
     };
-
     fetch(url, options)
-        .then((response) => response.json())
-        .then((res) => {
-            console.log(res);
-            alert("added");
+        .then((res) => res.json())
+        .then((data) => {
+            alert(`Producto agregado al carro - ID: ${_id}.`);
         })
-        .catch((error) => {
-            console.error("Error:", error);
-            alert(JSON.stringify(error));
+        .catch((err) => {
+            alert(`El producto con el ID: ${_id} no puede ser agregado.`);
         });
-}
+};

@@ -1,4 +1,4 @@
-import { CartModel } from "../models/cart.model.js";
+import { CartModel } from "../schemas/cart.schema.js";
 
 class CartDAO {
     async getCarts() {
@@ -41,7 +41,7 @@ class CartDAO {
         }
     }
 
-    async updateProductQuantity( cid, pid, quantity ) {         // Add several products to Cart
+    async updateProductQuantity( cid, pid, quantity ) {         // Update quantity products from Cart
         try {
             const cart = await this.getCartById(cid);
             
@@ -58,13 +58,13 @@ class CartDAO {
         }
     }
 
-    async removeCartProduct( cid, pid ) {         // Add several products to Cart
+    async removeCartProduct( cid, pid ) {         // Remove product from Cart
         try {
             const cart = await this.getCartById(cid);
 
             const pIndex = cart.products.findIndex(cart => cart.product.equals(pid)); // Finding index product in cart
             if(pIndex === -1) {
-                throw new Error('Product not found');
+                throw new Error(`Product ID "${pid}" not found`);
             }
             
             cart.products.splice(pIndex, 1);

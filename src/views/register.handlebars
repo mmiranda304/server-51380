@@ -1,9 +1,31 @@
-<form action="/register" method="POST">
-    <input type="text" name="firstName" placeholder="firstName">
-    <input type="text" name="lastName" placeholder="lastName">
-    <input type="number" name="age" placeholder="age">
-    <input type="text" name="email" placeholder="email">
-    <input type="password" name="password" placeholder="password">
-    <input type="submit" value='registrarse'>
-</form>
-<a href="/login">Ya tengo cuenta!</a>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="/css/login.css" />
+    </head>
+    <body>
+        <nav>
+            <a class='navLink' href="/"><img src="/img/BrandLogo.jpg" alt="logo" /> </a>
+            <div class="login">
+                {{#if user}}
+                    <a class="btn-login" href="/current">Mis datos</a>
+                    <a class="btn-login" href="/logout">Salir</a>
+                {{else}}
+                    <a class="btn-login" href="/login">Iniciar sesion</a>
+                    <a class="btn-login" href="/register">Registrarse</a>
+                {{/if}}
+            </div>
+        </nav>
+        <h1 class="login-title">Registrarse</h1>
+        <div class="login-container">
+            <form action="/register" method="POST">
+                <input class="input-login" type="text" name="firstName" placeholder="Nombre">
+                <input class="input-login" type="text" name="lastName" placeholder="Apellido">
+                <input class="input-login" type="number" name="age" placeholder="Edad">
+                <input class="input-login" type="text" name="email" placeholder="Email">
+                <input class="input-login" type="password" name="password" placeholder="Contraseña">
+                <input class="btn-login" type="submit" value='Registrarse'>
+            </form>
+            <a href="/login">Ya tengo cuenta!</a>
+        </div>
+    </body>
+</html>

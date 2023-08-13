@@ -13,6 +13,7 @@ viewsRouter.post('/login', passport.authenticate("login", { failureRedirect: "er
 viewsRouter.get('/register', sessionsController.getRegister);
 viewsRouter.post('/register', passport.authenticate("register", { failureRedirect: "error"}), sessionsController.postRegister);
 viewsRouter.get('/logout', sessionsController.getLogout);
+viewsRouter.get('/current', sessionsController.getProfile);
 viewsRouter.get('/products', productsController.getViewProducts);
 viewsRouter.get('/product/:id', productsController.getUserProduct);
 viewsRouter.get('/cart/:id', cartController.getUserCart);

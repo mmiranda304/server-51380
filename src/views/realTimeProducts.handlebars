@@ -1,73 +1,14 @@
-{{!-- <div class='checkout-container'>
-    <h4 class="checkout-title">Ingresar nuevo producto</h4>
-    <form>
-        <input 
-            type="text" 
-            id='title' 
-            placeholder='Titulo'
-            class='input-checkout' 
-            required
-        />
-        <input 
-            type="text" 
-            id='description' 
-            placeholder='Descripción' 
-            class='input-checkout' 
-            required
-        />
-        <input 
-            type="number" 
-            id='price' 
-            placeholder='Precio' 
-            pattern='^(([0-9]){0,})((\.)?[0-9]){1,3}$'
-            title='Sólo debe números.'
-            class='input-checkout' 
-            required
-        />
-        <input 
-            type="text" 
-            id='thumbnail' 
-            placeholder='Ruta de la imagen' 
-            class='input-checkout' 
-            required
-        />
-        <input 
-            type="text" 
-            id='code' 
-            placeholder='Código' 
-            title='Debe contener entre 4 y 20 caracteres.'
-            class='input-checkout' 
-            required
-        />
-        <input 
-            type="number" 
-            id='stock' 
-            placeholder='Stock' 
-            minlength="0"
-            title='Debe contener entre 4 y 20 caracteres.'
-            class='input-checkout' 
-            required
-        />
-        <div class="checkbox">
-            Estado
-            <input 
-            type="checkbox" 
-            id='status' 
-            checked="checked"
-            class='input-checkout'
-            required
-            />
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="/css/products.css" />
+    </head>
+    <body>    
+        <nav>
+            <a class='navLink' href="/"><img src="/img/BrandLogo.jpg" alt="logo" /> </a>
+        </nav>
+        <div class='item-list' id="item-list">
         </div>
-        <input 
-            type="submit" 
-            value="Finalizar Compra" 
-            class='input-endForm' 
-        />
-    </form>
-</div> --}}
-
-<div class='item-list' id="item-list">
-</div>
-
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/realTimeProducts.js"></script>
+    </body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/realTimeProducts.js"></script>
+</html>

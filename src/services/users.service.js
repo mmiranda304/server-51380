@@ -1,7 +1,7 @@
-import { UserModel } from '../DAO/models/users.model.js';
+import { UserModel } from '../models/schemas/users.schema.js';
 import { cartService } from './cart.service.js';
 import { createHash } from '../utils.js';
-import { usersDAO } from '../DAO/classes/users.dao.js';
+import { usersDAO } from '../models/daos/users.dao.js';
 
 class UsersService {
   validateUser(firstName, lastName, email, age) {
@@ -35,20 +35,20 @@ class UsersService {
     }
   }
 
-  async addUser(firstName, lastName, email, age, isAdmin, role, password) {
+  async addUser(user) {
     try { 
-      this.validateUser(firstName, lastName, email, age, role, password);
+      this.validateUser(user.firstName, user.lastName, user.email, user.age);
       const newCart = await cartService.addCart();
       const cartID = newCart._id.toString();
       const newUser = {
-        email: email,
-        firstName,
-        lastName,
-        age: Number(age),
-        password: createHash(password),
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        age: Number(user.age),
+        password: createHash(user.password),
         cart: cartID,
-        isAdmin,
-        role,
+        isAdmin: user.isAdmin,
+        role: user.role,
       };
       return await usersDAO.addUser(newUser);
     } catch (error) {

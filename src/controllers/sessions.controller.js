@@ -82,7 +82,9 @@ class SessionsController {
                 lastName: req.user.lastName,
                 email: req.user.email,
                 isAdmin: req.user.isAdmin,
-                role: req.user.role
+                age: req.user.age,
+                role: req.user.role,
+                cart: req.user.cart,
             };
             return res.redirect("/");   
         } catch (error) {
@@ -119,7 +121,9 @@ class SessionsController {
                 lastName: req.user.lastName,
                 email: req.user.email,
                 isAdmin: req.user.isAdmin,
-                role: req.user.role
+                age: req.user.age,
+                role: req.user.role,
+                cart: req.user.cart,
             };
             return res.redirect("/");
         } catch (error) {
@@ -127,6 +131,21 @@ class SessionsController {
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error post register view',
+            });
+        }
+    }
+    async getProfile (req, res) {
+        try {
+            const role = req.session.role === 'admin' ? true : false;
+            console.log(req.session.user);
+            return res.render('profile', {
+                user: req.session.user
+            });
+        } catch (error) {
+            console.error('Error in ViewsController.getProfile:', error);
+            return res.status(400).json({
+                status: 'error',
+                error: 'views.controller - Error get profile view',
             });
         }
     }
