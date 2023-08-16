@@ -1,4 +1,7 @@
 import { productsDAO } from '../models/daos/products.dao.js';
+import CustomError from './errors/customError.js';
+import EErrors from './errors/enums.js';
+import { customErrorMsg } from './errors/info.js';
 
 class ProductsService {
 
@@ -14,8 +17,9 @@ class ProductsService {
       !product.stock || product.stock < 0 ||
       product.status === undefined
       ) {
-        console.log('validation error: Please try again completing all the fields correctly.');
-        throw new Error('validation error: Please try again completing all the fields correctly.');
+        // console.log('validation error: Please try again completing all the fields correctly.');
+        // throw new Error('validation error: Please try again completing all the fields correctly.');
+        return undefined;
       }
 
       const codeExists = await productsDAO.verifyCode(product);
@@ -24,7 +28,13 @@ class ProductsService {
         throw new Error('validation error: The code already exists. Please try again with a new code.');
       }
     } catch (error) {
-      throw new Error('ProductsService.clearCart: ' + error);
+      //throw new Error('ProductsService.validateProduct: ' + error);
+      // CustomError.createError({
+      //   name: "Validation product error",
+      //   cause: customErrorMsg(product),
+      //   message: "Error trying to validate product",
+      //   code: EErrors.INVALID_TYPES_ERROR,  
+      // });
     }
   }
 
@@ -37,6 +47,12 @@ class ProductsService {
       ) {
         console.log('validation error: Please try again completing the fields correctly.');
         throw new Error('validation error: Please try again completing the fields correctly.');
+        // CustomError.createError({
+        //   name: "Validation product error",
+        //   cause: customErrorMsg(product),
+        //   message: "Error trying to validate product",
+        //   code: EErrors.INVALID_TYPES_ERROR,  
+        // });
       }
       if(product.code) {
         const codeExists = await productsDAO.verifyCode(product);
@@ -47,6 +63,12 @@ class ProductsService {
       }
     } catch (error) {
       throw new Error('ProductsService.validateUpdateProduct: ' + error);
+      // CustomError.createError({
+      //   name: "Validation product error",
+      //   cause: customErrorMsg(product),
+      //   message: "Error trying to validate product",
+      //   code: EErrors.INVALID_TYPES_ERROR,  
+      // });
     }
   }
 
@@ -121,7 +143,16 @@ class ProductsService {
 
   async addProduct(product) {
     try {
-      await this.validateProduct(product);
+      const validateProduct = await this.validateProduct(product);
+      if(!validateProduct) {
+        return CustomError.createError({
+          name: "Validation product error",
+          message: "Error trying to validate product",
+          code: EErrors.INVALID_TYPES_ERROR,  
+          cause: customErrorMsg.generateProductErrorInfo(product),
+        });
+      }
+
       const productCreated = await productsDAO.addProduct(product);
 
       return productCreated;

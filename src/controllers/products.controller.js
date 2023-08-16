@@ -114,21 +114,22 @@ class ProductsController {
             });
         }
     }
-    async addProduct(req, res) { 
+    async addProduct(req, res, next) { 
         try {
             const product = req.body;
             const productCreated = await productsService.addProduct(product);
-            
+            // return res.status(productCreated.status).json(productCreated.result);
             return res.status(201).json({
                 status: 'success',
                 payload: productCreated,
             });
         } catch (error) {
-            console.error('Error in ProductController.addProduct:', error);
-            return res.status(400).json({
-                status: 'error',
-                error: 'products.controller - An error occurred while adding product',
-            });
+            // console.error('Error in ProductController.addProduct:', error);
+            // return res.status(400).json({
+            //     status: 'error',
+            //     error: 'products.controller - An error occurred while adding product',
+            // });
+            next(error);
         }
     }
 

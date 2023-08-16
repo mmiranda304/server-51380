@@ -14,9 +14,13 @@ import { sessionsRouter } from './routes/sessions.router.js';
 import { viewsRouter } from './routes/views.router.js';
 import { __dirname, connectMongo } from "./utils.js";
 import { iniPassport } from './config/passport.config.js';
+import { mockRouter } from './routes/mock.router.js';
+import errorHandler from './middlewares/error.js';
 
 const app = express();
 const port = process.env.port;
+
+connectMongo();
 
 export const httpServer = app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`);
@@ -50,11 +54,13 @@ app.use(passport.session());
 app.use('/api/products', productsRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/users', usersRouter);
+app.use('/api', mockRouter);
 app.use('/api/sessions', sessionsRouter);
 app.use('/', viewsRouter);
 app.use('/auth', authRouter);;
 
-connectMongo();
+// Error handler
+app.use(errorHandler);
 
 app.get("*", (req, res) => {    // Catch all
     return res.status(400).json({
