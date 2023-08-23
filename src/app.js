@@ -16,6 +16,7 @@ import { __dirname, connectMongo } from "./utils.js";
 import { iniPassport } from './config/passport.config.js';
 import { mockRouter } from './routes/mock.router.js';
 import errorHandler from './middlewares/error.js';
+import { addLogger } from './utils/logger.js';
 
 const app = express();
 const port = process.env.port;
@@ -26,6 +27,7 @@ export const httpServer = app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`);
 });
 
+app.use(addLogger);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, "public")));
