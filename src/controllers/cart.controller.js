@@ -13,7 +13,7 @@ class CartController {
                 payload: carts, 
             });
         } catch (error) {
-            console.error('Error in CartController.getCarts:', error);
+            req.logger.error('Error in CartController.getCarts:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'cart.controller - An error occurred while getting carts',
@@ -27,6 +27,7 @@ class CartController {
             const cart = await cartService.getCartById(id);
         
             if(!cart) {
+                req.logger.info(`cart id '${id}' not found`);
                 return res.status(404).json({
                     status: 'error',
                     error: `cart id '${id}' not found`,
@@ -37,7 +38,7 @@ class CartController {
                 payload: cart, 
             });
         } catch (error) {
-            console.error('Error in CartController.getCartById:', error);
+            req.logger.error('Error in CartController.getCartById:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'cart.controller - An error occurred while getting cart',
@@ -53,6 +54,7 @@ class CartController {
             const cart = await cartService.getCartById(id);
             
             if(!cart) {
+                req.logger.info(`cart id '${id}' not found`);
                 return res.status(404).json({error: `cart id '${id}' not found`});
             }
             const simplifiedProducts = cart.products.map((item) => {
@@ -69,7 +71,7 @@ class CartController {
             };
             return res.status(200).render('cart', {user: user, cart: simplifiedCart});
         } catch (error) {
-            console.error('Error in ViewsController.getCart:', error);
+            req.logger.error('Error in ViewsController.getCart:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error get cart view',
@@ -87,7 +89,7 @@ class CartController {
                 payload: cartCreated,
             });
         } catch (error) {
-            console.error('Error in CartController.addCart:', error);
+            req.logger.error('Error in CartController.addCart:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'cart.controller - An error occurred while adding cart',
@@ -107,7 +109,7 @@ class CartController {
                 payload: productAdded,
             });
         } catch (error) {
-            console.error('Error in CartController.addCartProduct:', error);
+            req.logger.error('Error in CartController.addCartProduct:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'cart.controller - An error occurred while adding product to cart',
@@ -127,7 +129,7 @@ class CartController {
                 payload: cart,
             });
         } catch (error) {
-            console.error('Error in CartController.updateCartProducts:', error);
+            req.logger.error('Error in CartController.updateCartProducts:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'cart.controller - An error occurred while updating products in cart',
@@ -147,7 +149,7 @@ class CartController {
                 payload: cart,
             });
         } catch (error) {
-            console.error('Error in CartController.updateProductQuantity:', error);
+            req.logger.error('Error in CartController.updateProductQuantity:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'cart.controller - An error occurred while updating quantity products in cart',
@@ -166,7 +168,7 @@ class CartController {
                 payload: cart,
             });
         } catch (error) {
-            console.error('Error in CartController.addCartProduct:', error);
+            req.logger.error('Error in CartController.addCartProduct:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'cart.controller - An error occurred while removing product from cart',
@@ -185,7 +187,7 @@ class CartController {
                 payload: `id: '${cid}'`,
             });
         } catch (error) {
-            console.error('Error in CartController.clearCart:', error);
+            req.logger.error('Error in CartController.clearCart:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'cart.controller - An error occurred while clearing cart',
@@ -205,7 +207,7 @@ class CartController {
                 payload: ticket,
             });
         } catch (error) {
-            console.error('Error in CartController.purchaseCart:', error);
+            req.logger.error('Error in CartController.purchaseCart:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'cart.controller - An error occurred while purchasing cart',
@@ -227,7 +229,7 @@ class CartController {
             
             return res.render('ticket', { ticket: ticket, user: req.session.user } );
         } catch (error) {
-            console.error('Error in CartController.getTicketById:', error);
+            req.logger.error('Error in CartController.getTicketById:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'cart.controller - Error get ticket',

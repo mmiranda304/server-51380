@@ -3,13 +3,15 @@ import { productsService } from "../services/products.service.js";
 class ProductsController {
     async getProducts(req, res) { 
         try {
-            const products = await productsService.getProducts();
+            const products = await productsService.getProduct();
+
+            req.logger.info("Getting Products");
             return res.status(200).json({
                 status: 'success',
                 payload: products,
             }); 
         } catch (error) {
-            console.error('Error in ProductController.getProducts:', error);
+            req.logger.error('Error in ProductController.getProducts:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'products.controller - An error occurred while getting products',
@@ -21,20 +23,21 @@ class ProductsController {
         try {
             const id = req.params.id;
             const product = await productsService.getProductById(id);
-            console.log(product);
 
             if(!product) {
+                req.logger.info(`Product id '${id}' not found`);
                 return res.status(404).json({
                     status: 'error',
                     payload: `Product id '${id}' not found`,
                 });
             }
+            req.logger.info(`Getting product '${id}`);
             return res.status(200).json({
                 status: 'success',
                 payload: product,
             }); 
         } catch (error) {
-            console.error('Error in ProductController.getProductById:', error);
+            req.logger.error('Error in ProductController.getProductById:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'products.controller - An error occurred while getting the product',
@@ -50,6 +53,7 @@ class ProductsController {
             const product = await productsService.getProductById(id);
             
             if(!product) {
+                req.logger.info(`Product id '${id}' not found`);
                 return res.status(404).json({
                     status: 'error',
                     error: `Product id '${id}' not found`,
@@ -66,7 +70,7 @@ class ProductsController {
             
             return res.status(200).render('product', {user: user, product: Simplifiedproduct});
         } catch (error) {
-            console.error('Error in ViewsController.getProduct:', error);
+            req.logger.error('Error in ProductController.getProduct:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error get product view',
@@ -107,7 +111,7 @@ class ProductsController {
                 nextLink
             });
         } catch (error) {
-            console.error('Error in ViewsController.getProducts:', error);
+            req.logger.error('Error in ProductController.getProducts:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error get products view',
@@ -118,18 +122,16 @@ class ProductsController {
         try {
             const product = req.body;
             const productCreated = await productsService.addProduct(product);
-            // return res.status(productCreated.status).json(productCreated.result);
             return res.status(201).json({
                 status: 'success',
                 payload: productCreated,
             });
         } catch (error) {
-            // console.error('Error in ProductController.addProduct:', error);
-            // return res.status(400).json({
-            //     status: 'error',
-            //     error: 'products.controller - An error occurred while adding product',
-            // });
-            next(error);
+            req.logger.error('Error in ProductController.addProduct:', error);
+            return res.status(400).json({
+                status: 'error',
+                error: 'products.controller - An error occurred while adding product',
+            });
         }
     }
 
@@ -148,6 +150,7 @@ class ProductsController {
             
             const product = await productsService.updateProduct(id, productUpdate);
             if(!product) {
+                req.logger.info(`The product could not be updated. Plase verify and try again`);
                 res.status(400).json({
                     status: 'error',
                     payload: 'The product could not be updated. Plase verify and try again',
@@ -158,7 +161,7 @@ class ProductsController {
                 payload: product,
             });            
         } catch (error) {
-            console.error('Error in ProductController.updateProduct:', error);
+            req.logger.error('Error in ProductController.updateProduct:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'products.controller - An error occurred while updating product',
@@ -172,6 +175,7 @@ class ProductsController {
 
             const productExists = await productsService.getProductById(id);
             if(!productExists) {
+                req.logger.info(`Deleting Product - Product id '${id}' not found`);
                 return res.status(404).json({
                     status: 'error',
                     error: `Product id '${id}' not found`,
@@ -184,7 +188,7 @@ class ProductsController {
                 payload: `id: '${id}'`,
             });
         } catch (error) {
-            console.error('Error in ProductController.deleteProduct:', error);
+            req.logger.error('Error in ProductController.deleteProduct:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'products.controller - An error occurred while deleting product',
@@ -197,7 +201,7 @@ class ProductsController {
             const products = await productsService.getProducts();
             return res.status(200).render('realTimeProducts', {products} ); 
         } catch (error) {
-            console.error('Error in ViewsController.realTimeProducts:', error);
+            req.logger.error('Error in ProductController.realTimeProducts:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error get realTimeProducts view',

@@ -35,7 +35,7 @@ class SessionsController {
                 nextLink
             });
         } catch (error) {
-            console.error('Error in ViewsController.getHome:', error);
+            req.logger('Error in ViewsController.getHome:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error get home view',
@@ -49,7 +49,7 @@ class SessionsController {
             
             return res.status(200).render('home', {products} ); 
         } catch (error) {
-            console.error('Error in ViewsController.getHome2:', error);
+            req.logger('Error in ViewsController.getHome2:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error get home2 view',
@@ -61,7 +61,7 @@ class SessionsController {
         try {
             return res.render('login', {} );
         } catch (error) {
-            console.error('Error in ViewsController.getLogin:', error);
+            req.logger('Error in ViewsController.getLogin:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error get login view',
@@ -72,8 +72,9 @@ class SessionsController {
     async postLogin (req, res) {
         try {
             if (!req.user) {
+                req.logger.info("PostLogin - Complete all the fields correctly");
                 return res.status(400).render("error", { 
-                    error: 'Completar todos los campos correctamente'
+                    error: 'Complete all the fields correctly'
                 });
             }
             req.session.user = {
@@ -88,7 +89,7 @@ class SessionsController {
             };
             return res.redirect("/");   
         } catch (error) {
-            console.error('Error in ViewsController.postLogin:', error);
+            req.logger('Error in ViewsController.postLogin:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error post login view',
@@ -100,7 +101,7 @@ class SessionsController {
         try {
             return res.render('register', {} );
         } catch (error) {
-            console.error('Error in ViewsController.getRegister:', error);
+            req.logger('Error in ViewsController.getRegister:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error get register view',
@@ -111,8 +112,9 @@ class SessionsController {
     async postRegister (req, res) {
         try {
             if (!req.user) {
+                req.logger.info("postRegister - Complete all the fields correctly");
                 return res.status(400).render("error", { 
-                    error: 'Completar todos los campos correctamente'
+                    error: 'Complete all the fields correctly'
                 });
             }
             req.session.user = {
@@ -127,7 +129,7 @@ class SessionsController {
             };
             return res.redirect("/");
         } catch (error) {
-            console.error('Error in ViewsController.postRegister:', error);
+            req.logger('Error in ViewsController.postRegister:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error post register view',
@@ -137,12 +139,11 @@ class SessionsController {
     async getProfile (req, res) {
         try {
             const role = req.session.role === 'admin' ? true : false;
-            console.log(req.session.user);
             return res.render('profile', {
                 user: req.session.user
             });
         } catch (error) {
-            console.error('Error in ViewsController.getProfile:', error);
+            req.logger('Error in ViewsController.getProfile:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error get profile view',
@@ -154,12 +155,13 @@ class SessionsController {
         try {
             req.session.destroy((err) => {
                 if (err) {
-                  return res.status(500).render('error', {error: 'No se pudo cerrar la sesión'});
+                    req.logger.info("getLogout - Cannot finish the session");
+                  return res.status(500).render('error', {error: 'Cannot finish the session'});
                 }
                 res.redirect('/login');
             });
         } catch (error) {
-            console.error('Error in ViewsController.getLogout:', error);
+            req.logger('Error in ViewsController.getLogout:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'views.controller - Error get logout view',

@@ -17,14 +17,12 @@ class ProductsService {
       !product.stock || product.stock < 0 ||
       product.status === undefined
       ) {
-        // console.log('validation error: Please try again completing all the fields correctly.');
         // throw new Error('validation error: Please try again completing all the fields correctly.');
         return undefined;
       }
 
       const codeExists = await productsDAO.verifyCode(product);
       if(codeExists) {
-        console.log('validation error: The code already exists. Please try again with a new code.');
         throw new Error('validation error: The code already exists. Please try again with a new code.');
       }
     } catch (error) {
@@ -45,7 +43,6 @@ class ProductsService {
       (product.stock || product.stock < 0) ||
       (product.status && product.status === undefined)
       ) {
-        console.log('validation error: Please try again completing the fields correctly.');
         throw new Error('validation error: Please try again completing the fields correctly.');
         // CustomError.createError({
         //   name: "Validation product error",
@@ -57,7 +54,6 @@ class ProductsService {
       if(product.code) {
         const codeExists = await productsDAO.verifyCode(product);
         if(codeExists && codeExists._id != _id) {                                         // Only if the code belong to another product
-          console.log('validation error: The code already exists. Please try again with a new code.');
           throw new Error('validation error: The code already exists. Please try again with a new code.');
         }
       }

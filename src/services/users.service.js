@@ -6,7 +6,6 @@ import { usersDAO } from '../models/daos/users.dao.js';
 class UsersService {
   validateUser(firstName, lastName, email, age) {
     if ( !firstName || !lastName || !email || !age ) {
-      console.log('validation error: please complete firstName, lastname, email and age.');
       throw new Error('validation error: please complete firstName, lastname, email and age.');
     }
   }

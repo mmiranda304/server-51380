@@ -10,7 +10,7 @@ class UsersController {
                 payload: users,
             });
         } catch (error) {
-            console.error('Error in UsersController.getUsers:', error);
+            req.logger.error('Error in UsersController.getUsers:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'users.controller - An error occurred while getting users',
@@ -28,7 +28,7 @@ class UsersController {
                 payload: userCreated,
             });
         } catch (error) {
-            console.error('Error in UsersController.addUser:', error);
+            req.logger.error('Error in UsersController.addUser:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'users.controller - An error occurred while adding the user',
@@ -45,7 +45,7 @@ class UsersController {
             msg: 'user deleted',
         });
         } catch (error) {
-            console.error('Error in UsersController.deleteUser:', error);
+            req.logger.error('Error in UsersController.deleteUser:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'users.controller - An error occurred while deleting the user',
@@ -64,7 +64,7 @@ class UsersController {
                 payload: userUptaded,
             });
         } catch (error) {
-            console.error('Error in UsersController.updateUser:', error);
+            req.logger.error('Error in UsersController.updateUser:', error);
             return res.status(400).json({
                 status: 'error',
                 error: 'users.controller - An error occurred while updating the user',

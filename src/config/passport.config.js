@@ -21,11 +21,12 @@ export function iniPassport() {
         try {
           const user = await usersService.getUserByEmail(username);
           if (!user) {
-            console.log('User Not Found with username (email) ' + username);
+
+            req.logger.info('User Not Found with username (email) ' + username);
             return done(null, false);
           }
           if (!isValidPassword(password, user.password)) {
-            console.log('Invalid Password');
+            req.logger.info('Invalid Password');
             return done(null, false);
           }
           req.session.email = user.email;
@@ -55,7 +56,7 @@ export function iniPassport() {
           const { firstName, lastName, age } = req.body;
           let user = await usersService.getUserByEmail(username);
           if (user) {
-            console.log('User already exists');
+            req.logger.info('User already exists');
             return done(null, false);
           }
           const newUser = {
@@ -70,10 +71,9 @@ export function iniPassport() {
           let userCreated = await usersService.addUser(newUser);
           
           return done(null, userCreated);
-        } catch (e) {
-          console.log('Error in register');
-          console.log(e);
-          return done(e);
+        } catch (error) {
+          req.logger.error('Error in register: ', error);
+          return done(error);
         }
       }
     )
@@ -88,7 +88,7 @@ export function iniPassport() {
         callbackURL: process.env.GITHUB_CALLBACK_URL,
       },
       async (accesToken, _, profile, done) => {
-        console.log(profile);
+        req.logger.info(profile);
         try {
           const res = await fetch('https://api.github.com/user/emails', {
             headers: {
@@ -115,16 +115,15 @@ export function iniPassport() {
               password: 'nopass',
             };
             let userCreated = await usersService.addUser(newUser);
-            console.log('User Registration successful');
+            req.logger.info('User Registration successful');
             return done(null, userCreated);
           } else {
-            console.log('User already exists');
+            req.logger.info('User already exists');
             return done(null, user);
           }
-        } catch (e) {
-          console.log('Error en auth github');
-          console.log(e);
-          return done(e);
+        } catch (error) {
+          req.logger.info('Error in auth Github: ', error);
+          return done(error);
         }
       }
     )

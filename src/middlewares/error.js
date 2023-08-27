@@ -2,7 +2,7 @@ import EErrors from "../services/errors/enums.js";
 
 export default (err, req, res, next) => {
     const error = err;
-    console.log(error.cause);
+    req.logger.error(error.cause);
 
     switch (error.code) {
         case EErrors.ROUTING_ERROR:
