@@ -1,8 +1,9 @@
-import winston from "winston";
+import winston, { format, addColors } from "winston";
+const { printf } = format;
+
 import path from "path";
 import { __dirname } from "../utils.js";
 
-// const myCustomLevels = {
 const logsLevels = {
   levels: {
     fatal: 0,
@@ -14,8 +15,8 @@ const logsLevels = {
   },
   colors: {
     fatal: 'redBG grey',
-    error: 'whiteBG red',
-    warn: 'yellow',
+    error: 'bold red',
+    warning: 'yellow',
     info: 'gray',
     http: 'italic cyan',
     debug: 'bold blue',
@@ -24,6 +25,16 @@ const logsLevels = {
 
 let logger;
 
+const consoleFormat = printf(({ level, message }) => {
+  return `[${new Date()}] [${level}]: ${message}`;
+});
+
+const fileFormat = printf(({ level, message }) => {
+  return `[${new Date()}] [${level.toLocaleUpperCase()}]: ${message}`;
+});
+
+addColors(logsLevels.colors); // Agrega los colores personalizados
+
 switch (process.env.NODE_ENV) {
   case 'DEVELOPMENT':
     logger = winston.createLogger({
@@ -31,13 +42,13 @@ switch (process.env.NODE_ENV) {
       transports: [
         new winston.transports.Console({
           level: 'debug',
-          format: winston.format.colorize({ all: true }),
+          format: winston.format.colorize({ all: true }, consoleFormat),
         }),
 
         new winston.transports.File({
           filename: path.join(__dirname, 'logs/dev.errors.log'),
           level: 'error',
-          format: winston.format.simple(),
+          format: fileFormat,
         }),
       ],
     });
@@ -48,13 +59,13 @@ switch (process.env.NODE_ENV) {
       transports: [
         new winston.transports.Console({
           level: 'info',
-          format: winston.format.colorize({ all: true }),
+          format: winston.format.colorize({ all: true }, consoleFormat),
         }),
 
         new winston.transports.File({
           filename: path.join(__dirname, 'logs/prod.errors.log'),
           level: 'error',
-          format: winston.format.simple(),
+          format: fileFormat,
         }),
       ],
     });

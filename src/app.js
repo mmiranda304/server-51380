@@ -27,7 +27,7 @@ export const httpServer = app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`);
 });
 
-app.use(addLogger);
+app.use(addLogger);       // Must be the first middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, "public")));
@@ -63,6 +63,17 @@ app.use('/auth', authRouter);;
 
 // Error handler
 app.use(errorHandler);
+
+app.get("/loggerTest", (req, res) => {
+  req.logger.fatal("Log Fatal Error");
+  req.logger.error("Log Error");
+  req.logger.warning("Log Warning");
+  req.logger.info("Log Info");
+  req.logger.http("Log http");
+  req.logger.debug("Log debug");
+  
+  res.send({ message: "Testing logging"})
+});
 
 app.get("*", (req, res) => {    // Catch all
     return res.status(400).json({
