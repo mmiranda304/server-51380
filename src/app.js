@@ -5,6 +5,8 @@ import session from 'express-session';
 import passport from 'passport';
 import path from "path";
 import config from "./config/config.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 
 import { productsRouter } from './routes/products.router.js';
 import { cartRouter } from './routes/cart.router.js';
@@ -26,8 +28,20 @@ connectMongo();
 export const httpServer = app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`);
 });
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Documentacion Pizzas",
+      description: "Este proyecto no es de pizzas, es de usuarios",
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+const specs = swaggerJSDoc(swaggerOptions);
 
 app.use(addLogger);       // Must be the first middleware
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, "public")));

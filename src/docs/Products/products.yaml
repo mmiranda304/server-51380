@@ -1,0 +1,242 @@
+paths:
+  /api/products:
+    get:
+      summary: Get all products
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Products returned successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "400":
+          description: An error occurred while getting products.
+    post:
+      summary: Add new product
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Product ID to find.
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/addProduct"
+      responses:
+        "201":
+          description: Product added successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Product"
+        "400":
+          description: An error occurred while adding the product.
+/api/products/{id}:
+    get:
+      summary: Get a product by ID
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Product ID to find
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Product found successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Product"
+        "400":
+          description: An error occurred while getting the product.
+        "404":
+          description: Product not found.
+    put:
+      summary: Update product by ID.
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Product ID to find.
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateProduct"
+      responses:
+        "201":
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+        "400":
+          description: An error occurred while updating product.
+        "404":
+          description: Product not found.
+    delete:
+      summary: Delete product by ID.
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Product ID to delete.
+          schema:
+            $type: String
+      responses:
+        "201":
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+        "400":
+          description: An error occurred while deleting the product.
+        "404":
+          description: Product not found.
+components:
+  schemas:
+    Success:
+      type: object
+      properties:
+        status:
+          type: String
+          description: success or error
+        message:
+          type: String
+          description: description event
+      example:
+        status: Success
+        message: Product updated
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: auto generated ID by Mongo
+        title:
+          type: String
+          description: Product title.
+        description:
+          type: String
+          description: Product description.
+        price:
+          type: Number
+          description: Product price.
+        thumbnail:
+          type: String
+          description: Product route image.
+        code:
+          type: String
+          description: Unique product code.
+        status:
+          type: Boolean
+          description: Product status.
+        stock:
+          type: Number
+          description: Product stock.
+        category:
+          type: String
+          description: Product category.
+          option: ['cards', 'strategy', 'family', 'party']
+      example:
+        _id: ObjectId("644081a93f0625dc193bc594")
+        title: T.E.G.
+        description: This is a Risk version that is played in Argentina. This game is about a war that takes place over a map divided in 50 countries.
+        thumbnail: ./img/TEG/TEG.jpg"
+        code: TEG1GAME
+        status: true
+        stock: 20
+        category: strategy
+  requestBodies:
+    addProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Product title.
+        description:
+          type: String
+          description: Product description.
+        price:
+          type: Number
+          description: Product price.
+        thumbnail:
+          type: String
+          description: Product route image.
+        code:
+          type: String
+          description: Unique product code.
+        status:
+          type: Boolean
+          description: Product status.
+        stock:
+          type: Number
+          description: Product stock.
+        category:
+          type: String
+          description: Product category.
+          option: ['cards', 'strategy', 'family', 'party']
+      example:
+        title: T.E.G.
+        description: This is a Risk version that is played in Argentina. This game is about a war that takes place over a map divided in 50 countries.
+        thumbnail: ./img/TEG/TEG.jpg"
+        price: 10000
+        code: TEG1GAME
+        status: true
+        stock: 20
+        category: strategy
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Product title.
+        description:
+          type: String
+          description: Product description.
+        price:
+          type: Number
+          description: Product price.
+        thumbnail:
+          type: String
+          description: Product route image.
+        code:
+          type: String
+          description: Unique product code.
+        status:
+          type: Boolean
+          description: Product status.
+        stock:
+          type: Number
+          description: Product stock.
+        category:
+          type: String
+          description: Product category.
+          option: ['cards', 'strategy', 'family', 'party']
+      example:
+        price: 12000
+        thumbnail: ./img/TEG/TEG.jpg"
+        stock: 20

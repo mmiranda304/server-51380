@@ -1,0 +1,334 @@
+paths:
+  /api/cart:
+    get:
+      summary: Get all carts
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Carts returned successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "400":
+          description: An error occurred while getting carts.
+    post:
+      summary: Create new cart
+      tags:
+        - Carts
+      responses:
+        "201":
+          description: Cart created successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "400":
+          description: An error occurred while creating the cart.
+  /api/cart/{id}:
+    get:
+      summary: Get a cart by ID
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Cart ID to find
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Product found successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Cart"
+        "400":
+          description: An error occurred while getting the product.
+        "404":
+          description: Cart not found.
+    put:        # ***************  REVISAR COMO COMPLETARLO *************** #
+      summary: Add several products to cart by ID.
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Cart ID.
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateProduct"
+      responses:
+        "201":
+          description: ProductS added to cart successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/success"
+        "400":
+          description: An error occurred while adding products to cart.
+    delete:
+      summary: Clear cart by ID.
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Cart ID to clear.
+          schema:
+            $type: String
+      responses:
+        "201":
+          description: Cart cleared successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/success"
+        "400":
+          description: An error occurred while clearing the cart.
+  /api/cart/{cid}/product/{pid}:
+    post:
+      summary: Add product to cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Cart ID to find.
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: Product ID  to add.
+          schema:
+            $type: String
+      responses:
+        "201":
+          description: Product added to cart successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"
+        "400":
+          description: An error occurred while adding the product to cart.
+    put:
+      summary: Update product quantity in cart.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Cart ID to find.
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: Product ID  to update.
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateProductQuantity"
+      responses:
+        "200":
+          description: Product quantity updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/success"
+        "400":
+          description: An error occurred while updating quantity product.
+    delete:
+      summary: Remove cart product by ID.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Cart ID to find.
+          schema:
+            $type: String
+        - name: pid
+          in: path
+          required: true
+          description: Product ID  to remove.
+          schema:
+            $type: String
+      responses:
+        "201":
+          description: Product removed successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+        "400":
+          description: An error occurred while removing product from cart.
+  /api/cart/{cid}/purchase:
+    put:
+      summary: Purchase cart.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Cart ID to purchase.
+          schema:
+            $type: String
+      responses:
+        "201":
+          description: Cart purchased successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/success" 
+        "400":
+          description: An error occurred while purchasing cart.
+  /api/cart/purchase/{tid}:
+    get:
+      summary: Get buy ticket
+      tags:
+        - Carts
+      parameters:
+        - name: tid
+          in: path
+          required: true
+          description: Ticket ID to get.
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Cart ticket returned successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Cart"      # HACER
+        "400":
+          description: An error occurred while the cart ticket.
+        "404":
+          description: Ticket id not found.
+components:
+  schemas:
+    success:
+      type: object
+      properties:
+        status:
+          type: String
+          description: success or error
+        message:
+          type: String
+          description: description event
+      example:
+        status: Success
+        message: Cart updated
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: auto generated ID by Mongo
+        product:
+          type: ObjectId
+          description: product in DB.
+        quantity:
+          type: Number
+          description: Product quantity in cart.
+      example:
+        _id: ObjectId("644081a93f0625dc193bc594")
+        product: ObjectId("644081a93f0625sa67kfd516")
+        quantity: 4
+  requestBodies:
+    addProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Product title.
+        description:
+          type: String
+          description: Product description.
+        price:
+          type: Number
+          description: Product price.
+        thumbnail:
+          type: String
+          description: Product route image.
+        code:
+          type: String
+          description: Unique product code.
+        status:
+          type: Boolean
+          description: Product status.
+        stock:
+          type: Number
+          description: Product stock.
+        category:
+          type: String
+          description: Product category.
+          option: ['cards', 'strategy', 'family', 'party']
+      example:
+        title: T.E.G.
+        description: This is a Risk version that is played in Argentina. This game is about a war that takes place over a map divided in 50 countries.
+        thumbnail: ./img/TEG/TEG.jpg"
+        price: 10000
+        code: TEG1GAME
+        status: true
+        stock: 20
+        category: strategy
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Product title.
+        description:
+          type: String
+          description: Product description.
+        price:
+          type: Number
+          description: Product price.
+        thumbnail:
+          type: String
+          description: Product route image.
+        code:
+          type: String
+          description: Unique product code.
+        status:
+          type: Boolean
+          description: Product status.
+        stock:
+          type: Number
+          description: Product stock.
+        category:
+          type: String
+          description: Product category.
+          option: ['cards', 'strategy', 'family', 'party']
+      example:
+        price: 12000
+        thumbnail: ./img/TEG/TEG.jpg"
+        stock: 20

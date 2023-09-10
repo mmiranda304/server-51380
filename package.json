@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node ./src/app.js",
-    "dev": "nodemon ./src/app.js --mode DEVELOPMENT",
-    "prod": "nodemon ./src/app.js --mode PRODUCTION"
+    "dev": "nodemon -e yaml,js ./src/app.js --mode DEVELOPMENT",
+    "prod": "nodemon -e yaml,js ./src/app.js --mode PRODUCTION"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +31,8 @@
     "passport-github2": "^0.1.12",
     "passport-local": "^1.0.0",
     "socket.io": "^4.6.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "winston": "^3.10.0"
   }
 }
