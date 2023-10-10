@@ -30,7 +30,7 @@ const schemaUser = new Schema({
     required: true,
     max: 100,
   },
-  isAdmin: {        // SACARLO
+  isAdmin: {
     type: Boolean,
     required: true,
     default: false,
@@ -41,10 +41,14 @@ const schemaUser = new Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'admin'],
+    enum: ['user', 'premium', 'admin'],
     require: true,
     default: 'user',
   },
+  lastActivity: {
+    type: Date,
+    default: Date.now,
+  }
 },
 {
   versionKey: false

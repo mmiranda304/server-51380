@@ -51,6 +51,7 @@ export function iniPassport() {
         passReqToCallback: true,
         usernameField: 'email',
       },
+      
       async (req, username, password, done) => {
         try {
           const { firstName, lastName, age } = req.body;
@@ -59,6 +60,12 @@ export function iniPassport() {
             req.logger.info('User already exists');
             return done(null, false);
           }
+
+          if (!usersService.validatePassword(password)) {
+            req.logger.info('Password must be 8 to 20 caracters lenght.');
+            return done(null, false);
+          }
+
           const newUser = {
             email: username,
             firstName,

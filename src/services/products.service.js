@@ -148,7 +148,9 @@ class ProductsService {
           cause: customErrorMsg.generateProductErrorInfo(product),
         });
       }
-
+      if(req.session?.role === 'premium'){
+        product.owner = req.session.email;
+      }
       const productCreated = await productsDAO.addProduct(product);
 
       return productCreated;

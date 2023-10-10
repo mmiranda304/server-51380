@@ -3,7 +3,7 @@ import { productsService } from "../services/products.service.js";
 class ProductsController {
     async getProducts(req, res) { 
         try {
-            const products = await productsService.getProduct();
+            const products = await productsService.getProducts();
 
             req.logger.info("Getting Products");
             return res.status(200).json({
@@ -121,6 +121,11 @@ class ProductsController {
     async addProduct(req, res, next) { 
         try {
             const product = req.body;
+            if(req.session.role == 'premium') {
+                product.owner = req.session.email;
+            }
+            product.owner = 'admin';
+
             const productCreated = await productsService.addProduct(product);
             return res.status(201).json({
                 status: 'success',
@@ -181,7 +186,13 @@ class ProductsController {
                     error: `Product id '${id}' not found`,
                 });
             }
-
+            if( ( req.session.role != 'admin' ) && ( req.session.email != productExists.owner ) ) {
+                return res.status(404).json({
+                    status: 'error',
+                    error: `The user does not have permissions to delete this product`,
+                });
+            }
+            
             await productsService.deleteProduct(id);
             return res.status(201).json({
                 status: "success", 

@@ -18,6 +18,16 @@ export function isAdmin(req, res, next) {
   return res.status(403).render('error', { error: 'Error de autorización.' });
 };
 
+export function isPremium(req, res, next) {
+  if (process.env.NODE_ENV === 'DEVELOPMENT') {
+    return next();
+  }
+  if (req.session?.role === 'premium') {
+    return next();
+  }
+  return res.status(403).render('error', { error: 'Error de autorización.' });
+};
+
 export function isLogged(req, res, next) {
   if (process.env.NODE_ENV === 'DEVELOPMENT') {
     return next();

@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node ./src/app.js",
     "dev": "nodemon -e yaml,js ./src/app.js --mode DEVELOPMENT",
-    "prod": "nodemon -e yaml,js ./src/app.js --mode PRODUCTION"
+    "prod": "nodemon -e yaml,js ./src/app.js --mode PRODUCTION",
+    "testProducts": "mocha test/products.test.js"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +27,7 @@
     "mongoose-paginate-v2": "^1.7.1",
     "multer": "^1.4.5-lts.1",
     "node-fetch": "^3.3.1",
+    "nodemailer": "^6.9.5",
     "nodemon": "^2.0.22",
     "passport": "^0.6.0",
     "passport-github2": "^0.1.12",
@@ -34,5 +36,10 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.8",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }

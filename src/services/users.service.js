@@ -8,11 +8,21 @@ class UsersService {
     if ( !firstName || !lastName || !email || !age ) {
       throw new Error('validation error: please complete firstName, lastname, email and age.');
     }
+    const emailExpression = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // if (!emailExpression.test(email)) {
+    //   throw new Error('Email format not valid');
+    // }
+
   }
-  
+  validatePassword(password) {
+    const passPattern = /^.{8,20}$/;      //Password with 8-20 caracters lenght 
+    return passPattern.test(password);
+  }
+
   async getUsers() {
     try {
-      return await UserModel.find({});
+      return await usersDAO.getUsers();
     } catch (error) {
       throw new Error('UsersService.getUsers: ' + error);
     }
@@ -37,6 +47,11 @@ class UsersService {
   async addUser(user) {
     try { 
       this.validateUser(user.firstName, user.lastName, user.email, user.age);
+      
+      if( !this.validatePassword(user.password) ) {
+        throw new Error('validation error: password must be 8 to 20 caracters lenght.');
+      }
+
       const newCart = await cartService.addCart();
       const cartID = newCart._id.toString();
       const newUser = {
@@ -62,6 +77,27 @@ class UsersService {
       return await usersDAO.updateUser(_id, firstName, lastName, email, age, isAdmin, role);
     } catch (error) {
       throw new Error('UsersService.updateUser: ' + error);
+    }
+  }
+
+  async updateActivity(_id) {
+    try {
+      const lastActivity = new Date();
+
+      return await usersDAO.updateActivity(_id, lastActivity);
+    } catch (error) {
+      throw new Error('UsersService.updateActivity: ' + error);
+    }
+  }
+  async cleanUsers() {
+    try {
+      const offlineTime = new Date();
+      offlineTime.setDate(offlineTime.getDate() - 2);     // Setting for 2 days of inactivity
+      //offlineTime.setMinutes(offlineTime.getMinutes() - 2);     // Setting for 2 min of inactivity
+
+      return await usersDAO.cleanUsers(offlineTime);
+    } catch (error) {
+      throw new Error('UsersService.cleanUsers: ' + error);
     }
   }
 

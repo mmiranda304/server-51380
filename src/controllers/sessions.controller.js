@@ -1,4 +1,5 @@
 import { productsService } from "../services/products.service.js";
+import { usersService } from "../services/users.service.js";
 import { createHash, isValidPassword } from '../utils.js';
 
 class SessionsController {
@@ -38,7 +39,7 @@ class SessionsController {
             req.logger('Error in ViewsController.getHome:', error);
             return res.status(400).json({
                 status: 'error',
-                error: 'views.controller - Error get home view',
+                error: 'sessions.controller - Error get home view',
             });
         }
     }
@@ -49,10 +50,10 @@ class SessionsController {
             
             return res.status(200).render('home', {products} ); 
         } catch (error) {
-            req.logger('Error in ViewsController.getHome2:', error);
+            req.logger('Error in sessionsController.getHome2:', error);
             return res.status(400).json({
                 status: 'error',
-                error: 'views.controller - Error get home2 view',
+                error: 'sessions.controller - Error get home2 view',
             });
         }
     }
@@ -61,10 +62,10 @@ class SessionsController {
         try {
             return res.render('login', {} );
         } catch (error) {
-            req.logger('Error in ViewsController.getLogin:', error);
+            req.logger('Error in sessionsController.getLogin:', error);
             return res.status(400).json({
                 status: 'error',
-                error: 'views.controller - Error get login view',
+                error: 'sessions.controller - Error get login view',
             });
         }
     }
@@ -77,6 +78,7 @@ class SessionsController {
                     error: 'Complete all the fields correctly'
                 });
             }
+   
             req.session.user = {
                 _id: req.user._id,
                 firstName: req.user.firstName,
@@ -87,12 +89,27 @@ class SessionsController {
                 role: req.user.role,
                 cart: req.user.cart,
             };
+
+            usersService.updateActivity(req.user._id);      //Update user activity
+
             return res.redirect("/");   
         } catch (error) {
-            req.logger('Error in ViewsController.postLogin:', error);
+            req.logger('Error in sessionsController.postLogin:', error);
             return res.status(400).json({
                 status: 'error',
-                error: 'views.controller - Error post login view',
+                error: 'sessions.controller - Error post login view',
+            });
+        }
+    }
+
+    async loginFailed (req, res) {
+        try {
+            return res.render('login-failed', {} );
+        } catch (error) {
+            req.logger('Error in sessionsController.loginFailed:', error);
+            return res.status(400).json({
+                status: 'error',
+                error: 'sessions.controller - Error get loginfailed view',
             });
         }
     }
@@ -101,10 +118,10 @@ class SessionsController {
         try {
             return res.render('register', {} );
         } catch (error) {
-            req.logger('Error in ViewsController.getRegister:', error);
+            req.logger('Error in sessionsController.getRegister:', error);
             return res.status(400).json({
                 status: 'error',
-                error: 'views.controller - Error get register view',
+                error: 'sessions.controller - Error get register view',
             });
         }
     }
@@ -127,15 +144,31 @@ class SessionsController {
                 role: req.user.role,
                 cart: req.user.cart,
             };
+            
+            usersService.updateActivity(req.user._id);      //Update user activity
+
             return res.redirect("/");
         } catch (error) {
-            req.logger('Error in ViewsController.postRegister:', error);
+            req.logger('Error in sessionsController.postRegister:', error);
             return res.status(400).json({
                 status: 'error',
-                error: 'views.controller - Error post register view',
+                error: 'sessions.controller - Error post register view',
             });
         }
     }
+
+    async registerFailed (req, res) {
+        try {
+            return res.render('register-failed', {} );
+        } catch (error) {
+            req.logger('Error in sessionsController.registerFailed:', error);
+            return res.status(400).json({
+                status: 'error',
+                error: 'sessions.controller - Error get registerfailed view',
+            });
+        }
+    }
+
     async getProfile (req, res) {
         try {
             const role = req.session.role === 'admin' ? true : false;
@@ -143,10 +176,10 @@ class SessionsController {
                 user: req.session.user
             });
         } catch (error) {
-            req.logger('Error in ViewsController.getProfile:', error);
+            req.logger('Error in sessionsController.getProfile:', error);
             return res.status(400).json({
                 status: 'error',
-                error: 'views.controller - Error get profile view',
+                error: 'sessions.controller - Error get profile view',
             });
         }
     }
@@ -161,10 +194,10 @@ class SessionsController {
                 res.redirect('/login');
             });
         } catch (error) {
-            req.logger('Error in ViewsController.getLogout:', error);
+            req.logger('Error in sessionsController.getLogout:', error);
             return res.status(400).json({
                 status: 'error',
-                error: 'views.controller - Error get logout view',
+                error: 'sessions.controller - Error get logout view',
             });
         }
     }

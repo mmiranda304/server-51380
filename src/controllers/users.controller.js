@@ -36,6 +36,23 @@ class UsersController {
         }
     }
 
+    async cleanUsers(req, res) {       // Delete all users that have 2 days of inactivity
+        try {
+        const { id } = req.params;
+        const deleted = await usersService.cleanUsers(id);
+        return res.status(201).json({
+            status: 'success',
+            msg: 'users cleaned',
+        });
+        } catch (error) {
+            req.logger.error('Error in UsersController.deleteUser:', error);
+            return res.status(400).json({
+                status: 'error',
+                error: 'users.controller - An error occurred while deleting the user',
+            });
+        }
+    }
+
     async deleteUser(req, res) {
         try {
         const { id } = req.params;

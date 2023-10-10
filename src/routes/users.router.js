@@ -7,5 +7,6 @@ export const usersRouter = express.Router();
 
 usersRouter.get('/', isAdmin, usersController.getUsers);           
 usersRouter.post('/', isAdmin, usersController.addUser);           
+usersRouter.delete('/', isAdmin, usersController.cleanUsers);   
 usersRouter.delete('/:id', isAdmin, usersController.deleteUser);   
 usersRouter.put('/:id', isAdmin, usersController.updateUser);      

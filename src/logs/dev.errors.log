@@ -1,3 +1,15 @@
 [Sun Aug 27 2023 11:10:33 GMT-0300 (hora estándar de Argentina)] [FATAL]: Log Fatal Error
 [Sun Aug 27 2023 11:10:33 GMT-0300 (hora estándar de Argentina)] [ERROR]: Log Error
 [Sun Aug 27 2023 11:56:58 GMT-0300 (hora estándar de Argentina)] [ERROR]: Error in ProductController.getProducts: productsService.getProduc is not a function
+[Sun Oct 01 2023 10:02:25 GMT-0300 (hora estándar de Argentina)] [ERROR]: Error in CartController.addCartProduct: CartService.addCartProduct: Error: CartService.validateCartProduct: Error: CartDAO.getCartById: CastError: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+[Sun Oct 01 2023 11:08:27 GMT-0300 (hora estándar de Argentina)] [ERROR]: Error in register:  UsersService.addUser: Error: validation error: password must be 8 to 20 caracters lenght.
+[Sun Oct 01 2023 11:08:27 GMT-0300 (hora estándar de Argentina)] [ERROR]: undefined
+[Sun Oct 01 2023 11:16:15 GMT-0300 (hora estándar de Argentina)] [ERROR]: Error in register:  validation error: password must be 8 to 20 caracters lenght.
+[Sun Oct 01 2023 11:16:15 GMT-0300 (hora estándar de Argentina)] [ERROR]: undefined
+[Sun Oct 01 2023 15:26:35 GMT-0300 (hora estándar de Argentina)] [ERROR]: Error in register:  UsersService.addUser: Error: UsersDAO.addUser: ValidationError: age: Path `age` (5) is less than minimum allowed value (18).
+[Sun Oct 01 2023 15:26:35 GMT-0300 (hora estándar de Argentina)] [ERROR]: undefined
+[Sat Oct 07 2023 09:44:34 GMT-0300 (hora estándar de Argentina)] [FATAL]: Log Fatal Error
+[Sat Oct 07 2023 09:44:34 GMT-0300 (hora estándar de Argentina)] [ERROR]: Log Error
+[Sat Oct 07 2023 17:46:33 GMT-0300 (hora estándar de Argentina)] [ERROR]: Error in UsersController.addUser: UsersService.addUser: Error: validation error: please complete firstName, lastname, email and age.
+[Sat Oct 07 2023 17:49:39 GMT-0300 (hora estándar de Argentina)] [ERROR]: Error in UsersController.deleteUser: UsersService.deletedUser: ReferenceError: thirtyMinutesAgo is not defined
+[Sun Oct 08 2023 17:52:50 GMT-0300 (hora estándar de Argentina)] [ERROR]: Error in CartController.addCartProduct: CartService.addCartProduct: Error: CartService.validateCartProduct: Error: CartDAO.getCartById: CastError: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"

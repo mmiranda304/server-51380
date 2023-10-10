@@ -130,6 +130,86 @@ components:
       example:
         status: Success
         message: Product updated
+    ## Success w/payload    ########### GetPt/Pts-addPt-
+    SuccessPayload:
+      type: object
+      properties:
+        status:
+          type: String
+          description: success
+        payload:
+          type: object
+          description: products object
+          properties:
+            _id:
+              type: ObjectId
+              description: auto generated ID by Mongo
+            title:
+              type: String
+              description: Product title.
+            description:
+              type: String
+              description: Product description.
+            price:
+              type: Number
+              description: Product price.
+            thumbnail:
+              type: String
+              description: Product route image.
+            code:
+              type: String
+              description: Unique product code.
+            status:
+              type: Boolean
+              description: Product status.
+            stock:
+              type: Number
+              description: Product stock.
+            category:
+              type: String
+              description: Product category.
+              option: ['cards', 'strategy', 'family', 'party']
+      example:
+        status: success
+        payload: 
+          _id: ObjectId("644081a93f0625dc193bc594")
+          title: T.E.G.
+          description: This is a Risk version that is played in Argentina. This game is about a war that takes place over a map divided in 50 countries.
+          thumbnail: ./img/TEG/TEG.jpg"
+          code: TEG1GAME
+          status: true
+          stock: 20
+          category: strategy
+    ###################################
+    ## Error 400            ###########
+    Error400:
+      type: object
+      properties:
+        status:
+          type: String
+          description: error
+        error:
+          type: String
+          description: description event
+      example:
+        status: error
+        error: products.controller - An error occurred while [describe action]'
+    ###################################
+    ###################################
+    ## Error404             ###########
+    Error404:
+      type: object
+      properties:
+        status:
+          type: String
+          description: error
+        error:
+          type: String
+          description: description event
+      example:
+        status: error
+        error: products.controller - An error occurred while [describe action]'
+    ###################################
     Product:
       type: object
       properties:

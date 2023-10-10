@@ -33,6 +33,10 @@ const schemaProduct = new Schema({
     category: {
       type: String,
       enum: ['cards', 'strategy', 'family', 'party'],
+    },
+    owner: {
+      type: String,
+      default: 'admin',
     }
   },
   {

@@ -3,6 +3,7 @@ import handlebars from "express-handlebars";
 import MongoStore from 'connect-mongo';
 import session from 'express-session';
 import passport from 'passport';
+import nodemailer from "nodemailer";
 import path from "path";
 import config from "./config/config.js";
 import swaggerJSDoc from "swagger-jsdoc";
@@ -28,12 +29,14 @@ connectMongo();
 export const httpServer = app.listen(port, () => {
   console.log(`App listening on http://localhost:${port}`);
 });
+
+//-------------------- SWAGGER DOCS --------------------//
 const swaggerOptions = {
   definition: {
     openapi: "3.0.1",
     info: {
-      title: "Documentacion Pizzas",
-      description: "Este proyecto no es de pizzas, es de usuarios",
+      title: "MIM Games store Documentación",
+      description: "Documentatión for MIM games store",
     },
   },
   apis: [`${__dirname}/docs/**/*.yaml`],
@@ -46,10 +49,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, "public")));
 
+//-------------------- HANDLEBARS -------------------//
 app.engine("handlebars", handlebars.engine());
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "handlebars");
-
 //--------------------- SESSION ---------------------//
 app.use(
   session({
@@ -62,11 +65,11 @@ app.use(
     saveUninitialized: true,
   })
 );
-//-------------------- PASSPORT ---------------------//
+//------------------- PASSPORT --------------------//
 iniPassport();
 app.use(passport.initialize());
 app.use(passport.session());
-///---------------- Routes ----------------///
+//------------------- Routes ---------------------//
 app.use('/api/products', productsRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/users', usersRouter);
@@ -77,7 +80,7 @@ app.use('/auth', authRouter);;
 
 // Error handler
 app.use(errorHandler);
-
+//------------------- Testing --------------------//
 app.get("/loggerTest", (req, res) => {
   req.logger.fatal("Log Fatal Error");
   req.logger.error("Log Error");
@@ -96,3 +99,5 @@ app.get("*", (req, res) => {    // Catch all
         data: {},
     });
 });
+
+export default app; 
