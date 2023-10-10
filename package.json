@@ -2,7 +2,7 @@
   "name": "server-51380",
   "version": "1.0.0",
   "description": "",
-  "main": "productManager.js",
+  "main": "app.js",
   "type": "module",
   "engines": {
     "node": "18.x"
