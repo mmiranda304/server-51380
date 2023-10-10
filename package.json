@@ -4,6 +4,9 @@
   "description": "",
   "main": "productManager.js",
   "type": "module",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "start": "node ./src/app.js",
     "dev": "nodemon -e yaml,js ./src/app.js --mode DEVELOPMENT",
