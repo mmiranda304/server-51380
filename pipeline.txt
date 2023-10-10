@@ -1,0 +1,3 @@
+1) master branch        - dev: npm run dev:     http://localhost:8080
+2) qa branch            - qa: npm run qa:       http://localhost:8080
+3) production branch    - prod: npm run start:  http://localhost:3000
