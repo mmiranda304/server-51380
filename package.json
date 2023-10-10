@@ -8,6 +8,7 @@
     "start": "node ./src/app.js",
     "dev": "nodemon -e yaml,js ./src/app.js --mode DEVELOPMENT",
     "prod": "nodemon -e yaml,js ./src/app.js --mode PRODUCTION",
+    "qa": "node ./src/app.js --mode PRODUCTION",
     "testProducts": "mocha test/products.test.js"
   },
   "keywords": [],
