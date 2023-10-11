@@ -5,7 +5,7 @@ import session from 'express-session';
 import passport from 'passport';
 import nodemailer from "nodemailer";
 import path from "path";
-import config from "./config/config.js";
+import env from "./config/config.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express";
 
@@ -22,7 +22,7 @@ import errorHandler from './middlewares/error.js';
 import { addLogger } from './utils/logger.js';
 
 const app = express();
-const port = process.env.port;
+const port = env.port;
 
 connectMongo();
 

@@ -5,12 +5,12 @@
   "main": "app.js",
   "type": "module",
   "engines": {
-    "node": "16.14.2"
+    "node": "16.x"
   },
   "scripts": {
     "start": "node ./src/app.js",
     "dev": "nodemon -e yaml,js ./src/app.js --mode DEVELOPMENT",
-    "prod": "nodemon -e yaml,js ./src/app.js --mode DEVELOPMENT",
+    "prod": "nodemon -e yaml,js ./src/app.js --mode PRODUCTION",
     "qa": "node ./src/app.js --mode DEVELOPMENT",
     "testProducts": "mocha test/products.test.js"
   },
