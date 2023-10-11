@@ -18,9 +18,9 @@ const addToCart = (_id) => {
     fetch(url, options)
         .then((res) => res.json())
         .then((data) => {
-            alert(`Producto agregado al carro - ID: ${_id}.`);
+            alert(`Producto agregado al carrito!`);
         })
         .catch((err) => {
-            alert(`El producto con el ID: ${_id} no puede ser agregado.`);
+            alert(`El producto no puede ser agregado.`);
         });
 };
