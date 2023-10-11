@@ -7,7 +7,7 @@ export const cartRouter = express.Router();
 cartRouter.get('/', isAdmin, cartController.getCarts);          
 cartRouter.get('/:id', cartController.getCartById);
 cartRouter.post('/', cartController.addCart);
-cartRouter.post('/:cid/product/:pid', isAdmin, cartController.addCartProduct); 
+cartRouter.post('/:cid/product/:pid', isLogged, cartController.addCartProduct); 
 cartRouter.put('/:cid', cartController.addCartProducts);
 cartRouter.put('/:cid/product/:pid', cartController.updateProductQuantity);
 cartRouter.delete('/:cid/product/:pid', cartController.removeCartProduct);
